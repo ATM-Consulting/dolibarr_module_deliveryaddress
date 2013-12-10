@@ -94,7 +94,7 @@ class modSupplierdeliveryaddress extends DolibarrModules
             // Set this to relative path of css if module has its own css file
             //'css' => '/mymodule/css/mycss.css.php',
             // Set here all hooks context managed by module
-            //'hooks' => array('hookcontext1','hookcontext2')
+            'hooks' => array('ordersuppliercard','ordercard')
             // Set here all workflow context managed by module
             //'workflow' => array('order' => array('WORKFLOW_ORDER_AUTOCREATE_INVOICE'))
         );
