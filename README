@@ -1,1 +1,9 @@
 STRUCTURE STANDARD POUR CREATION DE MODULE DOLIBARR - ATM
+
+
+AJOUT DE L'APPEL DU DOACTION POUR LE HOOK
+
+htdocs -> fourn -> commande -> fiche.php -> ligne 99 environ
+
+$parameters=array('socid'=>$socid);
+$reshook=$hookmanager->executeHooks('doActions',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
