@@ -11,11 +11,12 @@ class ActionsSupplierdeliveryaddress
     function doActions($parameters, &$object, &$action, $hookmanager) 
     {
       	global $langs,$db;
-		require dol_buildpath('/contact/class/contact.class.php');
-		require dol_buildpath('/core/lib/pdf.lib.php');
+		
  		if (in_array('ordersuppliercard',explode(':',$parameters['context'])) && $action == 'builddoc')
         {
-			
+        	require dol_buildpath('/contact/class/contact.class.php');
+			require dol_buildpath('/core/lib/pdf.lib.php');
+
 			$TContacts = $object->liste_contact();
 			foreach($TContacts as $c) {
 				if($c['code'] == 'SHIPPING') {
