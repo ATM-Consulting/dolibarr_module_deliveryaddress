@@ -14,8 +14,8 @@ class ActionsSupplierdeliveryaddress
 		
  		if (in_array('ordersuppliercard',explode(':',$parameters['context'])) && $action == 'builddoc')
         {
-        	require dol_buildpath('/contact/class/contact.class.php');
-			require dol_buildpath('/core/lib/pdf.lib.php');
+        	dol_include_once('/contact/class/contact.class.php');
+			dol_include_once('/core/lib/pdf.lib.php');
 
 			$TContacts = $object->liste_contact();
 			foreach($TContacts as $c) {
