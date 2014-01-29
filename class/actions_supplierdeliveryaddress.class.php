@@ -12,7 +12,8 @@ class ActionsSupplierdeliveryaddress
     {
       	global $langs,$db;
 		
- 		if (in_array('ordersuppliercard',explode(':',$parameters['context'])) && $action == 'builddoc')
+ 		if ($action == 'builddoc' && (in_array('ordersuppliercard',explode(':',$parameters['context']))
+						|| in_array('ordercard',explode(':',$parameters['context']))))
         {
         	dol_include_once('/contact/class/contact.class.php');
 			dol_include_once('/core/lib/pdf.lib.php');
