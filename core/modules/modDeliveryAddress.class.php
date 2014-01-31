@@ -28,7 +28,7 @@ include_once DOL_DOCUMENT_ROOT . "/core/modules/DolibarrModules.class.php";
 /**
  * Description and activation class for module MyModule
  */
-class modDeliveryaddress extends DolibarrModules
+class modDeliveryAddress extends DolibarrModules
 {
 
     /**
@@ -59,7 +59,7 @@ class modDeliveryaddress extends DolibarrModules
         // Module description
         // used if translation string 'ModuleXXXDesc' not found
         // (where XXX is value of numeric property 'numero' of module)
-        $this->description = "Définir une nouvelle adresse de livraison pour une commande fournisseur";
+        $this->description = "Affiche l'adresse de livraison dans les PDF de commande client et de commande fournisseur";
         // Possible values for version are: 'development', 'experimental' or version
         $this->version = '1.0';
         // Key used in llx_const table to save module status enabled/disabled
