@@ -1,5 +1,5 @@
 <?php
-class ActionsSupplierdeliveryaddress
+class ActionsDeliveryaddress
 { 
 	/** Overloading the doActions function : replacing the parent's function with the one below 
 	 *  @param      parameters  meta datas of the hook (context, etc...) 
@@ -10,7 +10,7 @@ class ActionsSupplierdeliveryaddress
 	function doActions($parameters, &$object, &$action, $hookmanager) 
 	{
 		global $langs,$db;
-		echo 'tes2t';
+		
  		if ($action == 'builddoc'
  			&& (in_array('ordersuppliercard',explode(':',$parameters['context']))
 				|| in_array('ordercard',explode(':',$parameters['context'])))
@@ -18,14 +18,21 @@ class ActionsSupplierdeliveryaddress
 		{
 			dol_include_once('/contact/class/contact.class.php');
 			dol_include_once('/core/lib/pdf.lib.php');
-echo 'test';
+
 			$TContacts = $object->liste_contact();
 			foreach($TContacts as $c) {
 				if($c['code'] == 'SHIPPING') {
 					$contact = new Contact($db);
 					$contact->fetch($c['id']);
-					$note = empty($object->note_public)?"":$object->note_public."\n\n";
-					$object->note_public = $note.$langs->trans("DeliveryAddress")." :\n".pdf_build_address($langs, $contact);
+					$soc = new Societe($db);
+					$soc->fetch($c['socid']);
+					
+					$address = $langs->trans("DeliveryAddress").": \n";
+					$address.= !empty($contact->socname) ? $contact->socname."\n" : "";
+					$address.= pdf_build_address($langs, $mysoc, $soc, $contact, 1, 'target');
+					$address.= !empty($contact->phone_pro) ? "\n".$langs->transnoentities("Phone").": ".$langs->convToOutputCharset($contact->phone_pro) : "";
+					$address.= !empty($object->note_public) ? "\n" : "";
+					$object->note_public = $address.$object->note_public;
 					break;
 				}
 			}
