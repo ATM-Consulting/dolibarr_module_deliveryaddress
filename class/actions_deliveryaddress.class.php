@@ -38,8 +38,13 @@ class ActionsDeliveryaddress
 						$address.= !empty($contact->phone_pro) ? "\n".$langs->transnoentities("Phone").": ".$langs->convToOutputCharset($contact->phone_pro) : "";
 						$address.= !empty($object->note_public) ? "\n" : "";
 						
-						if($repeat)
+						if($conf->clipastel->enabled){
+							if($repeat)
+								$object->note_public = $address.$object->note_public;
+						}
+						else{
 							$object->note_public = $address.$object->note_public;
+						}
 						
 						break;
 					}
