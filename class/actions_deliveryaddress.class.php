@@ -7,22 +7,22 @@ class ActionsDeliveryaddress
 	 *  @param      action             current action (if set). Generally create or edit or null 
 	 *  @return       void 
 	 */
-	function doActions($parameters, &$object, &$action, $hookmanager) 
+	function doActions($parameters, &$object, &$action, $hookmanager,$repeat=0) 
 	{
 		global $langs,$db;
-		
+
  		if ($action == 'builddoc'
  			&& (in_array('ordersuppliercard',explode(':',$parameters['context']))
 				|| in_array('ordercard',explode(':',$parameters['context']))))
 			{
 				
 				/*echo '<pre>';
-				print_r($object);
+				print_r($langs);
 				echo '</pre>'; exit;*/
-				
+							
 				dol_include_once('/contact/class/contact.class.php');
 				dol_include_once('/core/lib/pdf.lib.php');
-	
+
 				$TContacts = $object->liste_contact();
 				foreach($TContacts as $c) {
 					if($c['code'] == 'SHIPPING') {
@@ -30,16 +30,17 @@ class ActionsDeliveryaddress
 						$contact->fetch($c['id']);
 						$soc = new Societe($db);
 						$soc->fetch($c['socid']);
-						
-						$address = $langs->trans("DeliveryAddress").": \n";
+
+						//$address = $langs->trans("DeliveryAddress").": \n";
+						$address = $langs->trans("DeliveryAddress")." : \n";
 						$address.= !empty($contact->socname) ? $contact->socname."\n" : "";
 						$address.= pdf_build_address($langs, $mysoc, $soc, $contact, 1, 'target');
 						$address.= !empty($contact->phone_pro) ? "\n".$langs->transnoentities("Phone").": ".$langs->convToOutputCharset($contact->phone_pro) : "";
 						$address.= !empty($object->note_public) ? "\n" : "";
 						
-						if(strpos($object->note_public, $address) === FALSE){
+						if($repeat)
 							$object->note_public = $address.$object->note_public;
-						}
+						
 						break;
 					}
 				}
