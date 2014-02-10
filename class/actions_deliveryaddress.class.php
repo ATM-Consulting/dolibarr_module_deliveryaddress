@@ -9,7 +9,7 @@ class ActionsDeliveryaddress
 	 */
 	function doActions($parameters, &$object, &$action, $hookmanager,$repeat=0) 
 	{
-		global $langs,$db;
+		global $langs,$db,$conf;
 
  		if ($action == 'builddoc'
  			&& (in_array('ordersuppliercard',explode(':',$parameters['context']))
