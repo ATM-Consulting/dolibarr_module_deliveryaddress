@@ -11,45 +11,9 @@ class ActionsDeliveryaddress
 	{
 		global $langs,$db,$conf;
 
- 		if ($action == 'builddoc'
- 			&& (in_array('ordersuppliercard',explode(':',$parameters['context']))
-				|| in_array('ordercard',explode(':',$parameters['context']))))
-			{
-				
-				/*echo '<pre>';
-				print_r($langs);
-				echo '</pre>'; exit;*/
-							
-				dol_include_once('/contact/class/contact.class.php');
-				dol_include_once('/core/lib/pdf.lib.php');
+		dol_include_once('/custom/deliveryaddress/class/deliveryaddress.class.php');
 
-				$TContacts = $object->liste_contact();
-				foreach($TContacts as $c) {
-					if($c['code'] == 'SHIPPING') {
-						$contact = new Contact($db);
-						$contact->fetch($c['id']);
-						$soc = new Societe($db);
-						$soc->fetch($c['socid']);
-
-						//$address = $langs->trans("DeliveryAddress").": \n";
-						$address = $langs->trans("DeliveryAddress")." : \n";
-						$address.= !empty($contact->socname) ? $contact->socname."\n" : "";
-						$address.= pdf_build_address($langs, $mysoc, $soc, $contact, 1, 'target');
-						$address.= !empty($contact->phone_pro) ? "\n".$langs->transnoentities("Phone").": ".$langs->convToOutputCharset($contact->phone_pro) : "";
-						$address.= !empty($object->note_public) ? "\n" : "";
-						
-						if($conf->clipastel->enabled){
-							if($repeat)
-								$object->note_public = $address.$object->note_public;
-						}
-						else{
-							$object->note_public = $address.$object->note_public;
-						}
-						
-						break;
-					}
-				}
-			}
+		TDeliveryaddress::doActionsDeliveryaddress($parameters, $object, $action, $hookmanager);
 		
 		return 0;
 	}
