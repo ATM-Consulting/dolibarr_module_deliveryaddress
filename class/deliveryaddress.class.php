@@ -14,7 +14,7 @@ class TDeliveryaddress{
 		
 				dol_include_once('/contact/class/contact.class.php');
 				dol_include_once('/core/lib/pdf.lib.php');
-
+				$txt = '';
 				$TContacts = $object->liste_contact();
 				foreach($TContacts as $c) {
 					if($c['code'] == 'SHIPPING') {
@@ -32,15 +32,19 @@ class TDeliveryaddress{
 						
 						if($conf->clipastel->enabled){
 							if($repeat)
-								$object->note_public = $address.$object->note_public;
+								$txt = $address;
 						}
 						else{
-							$object->note_public = $address.$object->note_public;
+							$txt = $address;
 						}
 						
 						break;
 					}
 				}
+				
+				// Gestion des sauts de lignes si la note était en HTML de base
+				if(dol_textishtml($object->note_public)) $object->note_public = dol_nl2br($txt).$object->note_public;
+				else $object->note_public = $txt.$object->note_public;
 				
 				//Si le module est actif sans module spécifique client alors on reproduit la génération standard dolibarr sinon on retourne l'objet modifié
 				if(!$conf->global->USE_SPECIFIC_CLIENT){
