@@ -1,7 +1,7 @@
 <?php
 class TDeliveryaddress{
 	
-	static function doActionsDeliveryaddress(&$parameters, &$object, &$action, &$hookmanager) {
+	static function doActionsDeliveryaddress(&$parameters, &$object, &$action, &$hookmanager, $alreadyDone = false) {
 		
 		global $langs, $db, $conf, $user;
 		
@@ -31,7 +31,7 @@ class TDeliveryaddress{
 						$address.= !empty($object->note_public) ? "\n" : "";
 						
 						if($conf->clipastel->enabled){
-							if($repeat)
+							if(!$alreadyDone)
 								$txt = $address;
 						}
 						else{

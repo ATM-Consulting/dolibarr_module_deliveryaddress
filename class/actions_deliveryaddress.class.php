@@ -7,13 +7,15 @@ class ActionsDeliveryaddress
 	 *  @param      action             current action (if set). Generally create or edit or null 
 	 *  @return       void 
 	 */
-	function doActions($parameters, &$object, &$action, $hookmanager,$repeat=0) 
+	function doActions($parameters, &$object, &$action, $hookmanager) 
 	{
 		global $langs,$db,$conf;
 
 		dol_include_once('/custom/deliveryaddress/class/deliveryaddress.class.php');
 
-		TDeliveryaddress::doActionsDeliveryaddress($parameters, $object, $action, $hookmanager);
+		$alreadyDone = true;
+
+		TDeliveryaddress::doActionsDeliveryaddress($parameters, $object, $action, $hookmanager, $alreadyDone);
 		
 		return 0;
 	}
