@@ -11,7 +11,7 @@ class ActionsDeliveryaddress
 	{
 		global $langs,$db,$conf;
 
-		dol_include_once('/custom/deliveryaddress/class/deliveryaddress.class.php');
+		dol_include_once('/deliveryaddress/class/deliveryaddress.class.php');
 
 		TDeliveryaddress::doActionsDeliveryaddress($parameters, $object, $action, $hookmanager);
 		
