@@ -111,8 +111,10 @@ class InterfaceDeliveryAddressWorkflow
 
 		$db=&$this->db;
 
+		// FIXME On vire en dessous parce que deja fait dans le hook sinon adresse apparait 2 fois (je sais pas prquoi ça y est 2 fois...)
+
 		if($action == "BEFORE_ORDER_BUILDDOC"  || $action == "BEFORE_ORDER_SUPPLIER_BUILDDOC"){
-				
+/*				
 			$txt = '';
 			$TContacts = $object->liste_contact();
 			foreach($TContacts as $c) {
@@ -140,11 +142,11 @@ class InterfaceDeliveryAddressWorkflow
 					break;
 				}
 			}
-			
+
 			// Gestion des sauts de lignes si la note était en HTML de base
 			if(dol_textishtml($object->note_public)) $object->note_public = dol_nl2br($txt).$object->note_public;
 			else $object->note_public = $txt.$object->note_public;
-
+*/
 		}	
 		
 		if($action == "ORDER_BUILDDOC" || $action == "ORDER_SUPPLIER_BUILDDOC") {
