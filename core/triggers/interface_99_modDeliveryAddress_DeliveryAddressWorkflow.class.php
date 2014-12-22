@@ -155,6 +155,27 @@ class InterfaceDeliveryAddressWorkflow
 			
 		}
 		
+		// Spécifique Volition pour ajout d'une ligne titre si sélection du contact "Client final"
+		if($action == "COMMANDE_ADD_CONTACT" && $object->statut == 0 && $_REQUEST['type'] == 110124){
+			$txt = '';
+			$TContacts = $object->liste_contact();
+			foreach($TContacts as $c) {
+				if($c['code'] == 'FINALCUSTOMER' && $c['id'] == $_REQUEST['contactid']) {
+					$contact = new Contact($db);
+					$contact->fetch($c['id']);
+					$soc = new Societe($db);
+					$soc->fetch($c['socid']);
+
+					$title = 'Adresse client final';
+					$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = 1;
+					$address = pdf_build_address($langs, $mysoc, $soc, $contact, 1, 'target');
+					
+					$object->addline($address, 0,1,0,0,0,0,0,0,0,'HT',0,'','',9,-1, 104777,0,null,0,$title);
+					
+					break;
+				}
+			}
+		}
 		
 		return 1;
 	}
