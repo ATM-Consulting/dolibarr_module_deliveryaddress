@@ -4,6 +4,7 @@ class TDeliveryaddress{
 	static function doActionsDeliveryaddress(&$parameters, &$object, &$action, &$hookmanager, $alreadyDone = false) {
 		
 		global $langs, $db, $conf, $user;
+		dol_include_once('/core/lib/company.lib.php');
 		
 		if (in_array('ordercard',explode(':',$parameters['context'])) || in_array('propalcard',explode(':',$parameters['context']))
 			|| in_array('expeditioncard',explode(':',$parameters['context'])) || in_array('invoicecard',explode(':',$parameters['context']))
@@ -84,7 +85,7 @@ class TDeliveryaddress{
 							$result= delivery_order_pdf_create($db, $object, $object->modelpdf, $outputlangs);
 							break;
 						case 'order_supplier':
-							$result= supplier_order_pdf_create($db, $object, $object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+ 							$result= supplier_order_pdf_create($db, $object, $object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
 							break;
 						case 'invoice_supplier':
 							$result= supplier_invoice_pdf_create($db, $object, $object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
