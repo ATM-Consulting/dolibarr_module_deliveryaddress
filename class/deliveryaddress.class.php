@@ -70,25 +70,53 @@ class TDeliveryaddress{
 					
 					switch ($object->element) {
 						case 'propal':
-							$result= propale_pdf_create($db, $object, $object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							if((float)DOL_VERSION > 3.6) {
+								$result = $object->generateDocument($object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							}else{
+								$result = propale_pdf_create($db, $object, $object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							}
 							break;
 						case 'facture':
-							$result= facture_pdf_create($db, $object, $object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							if ((float)DOL_VERSION > 3.6){
+								$result = $object->generateDocument($object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							}else {
+								$result = facture_pdf_create($db, $object, $object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							}
 							break;
 						case 'commande':
-							$result= commande_pdf_create($db, $object, $object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							if((float)DOL_VERSION > 3.6) {
+								$result = $object->generateDocument($object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							}else{
+								$result = commande_pdf_create($db, $object, $object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							}
 							break;
 						case 'shipping':
-							$result= expedition_pdf_create($db, $object, $object->modelpdf, $outputlangs);
+							if((float)DOL_VERSION > 3.6){
+								$result = $object->generateDocument($object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							}else{
+								$result= expedition_pdf_create($db, $object, $object->modelpdf, $outputlangs);
+							}
 							break;
 						case 'delivery':
-							$result= delivery_order_pdf_create($db, $object, $object->modelpdf, $outputlangs);
+							if((float)DOL_VERSION > 3.6){
+								$result = $object->generateDocument($object->modelpdf, $outputlangs);
+							}else{
+								$result= delivery_order_pdf_create($db, $object, $object->modelpdf, $outputlangs);
+							}
 							break;
 						case 'order_supplier':
- 							$result= supplier_order_pdf_create($db, $object, $object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							if((float) DOL_VERSION > 3.6){
+								$result=$object->generateDocument($object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							}else{
+								$result= supplier_order_pdf_create($db, $object, $object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							}
 							break;
 						case 'invoice_supplier':
-							$result= supplier_invoice_pdf_create($db, $object, $object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							if((float) DOL_VERSION > 3.6){
+								$result= $object->generateDocument($object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							}else{
+								$result= supplier_invoice_pdf_create($db, $object, $object->modelpdf, $outputlangs, $hidedetails, $hidedesc, $hideref);
+							}
 							break;	
 						default:
 							
