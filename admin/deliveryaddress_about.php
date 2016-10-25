@@ -1,6 +1,6 @@
 <?php
 /* <one line to give the program's name and a brief idea of what it does.>
- * Copyright (C) 2013 ATM Consulting <support@atm-consulting.fr>
+ * Copyright (C) 2015 ATM Consulting <support@atm-consulting.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,9 @@
  */
 
 /**
- * 	\file		admin/mymodule.php
- * 	\ingroup	mymodule
- * 	\brief		This file is an example module setup page
+ * 	\file		admin/about.php
+ * 	\ingroup	deliveryaddress
+ * 	\brief		This file is an example about page
  * 				Put some comments here
  */
 // Dolibarr environment
@@ -28,30 +28,22 @@ if (! $res) {
     $res = @include("../../../main.inc.php"); // From "custom" directory
 }
 
-
 // Libraries
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
-require_once '../lib/mymodule.lib.php';
-//require_once "../class/myclass.class.php";
+require_once '../lib/deliveryaddress.lib.php';
+
 // Translations
-$langs->load("mymodule@mymodule");
+$langs->load("deliveryaddress@deliveryaddress");
 
 // Access control
 if (! $user->admin) {
     accessforbidden();
 }
 
-// Parameters
-$action = GETPOST('action', 'alpha');
-
-/*
- * Actions
- */
-
 /*
  * View
  */
-$page_name = "MyModuleSetup";
+$page_name = "DeliveryAddressAbout";
 llxHeader('', $langs->trans($page_name));
 
 // Subheader
@@ -60,17 +52,24 @@ $linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">'
 print_fiche_titre($langs->trans($page_name), $linkback);
 
 // Configuration header
-$head = mymoduleAdminPrepareHead();
+$head = deliveryaddressAdminPrepareHead();
 dol_fiche_head(
     $head,
-    'settings',
-    $langs->trans("Module10000Name"),
+    'about',
+    $langs->trans("Module104060Name"),
     0,
-    "mymodule@mymodule"
+    'deliveryaddress@deliveryaddress'
 );
 
-// Setup page goes here
-echo $langs->trans("MyModuleSetupPage");
+// About page goes here
+print '<div style="float: left;"><img src="../img/Dolibarr_Preferred_Partner_logo.png" /></div>';
+print '<div>'.$langs->trans('ATMAbout').'</div>';
+
+dol_fiche_end();
+
+print '<br><center>';
+print '<a href="http://www.atm-consulting.fr" target="_blank"><img src="../img/ATM_logo.jpg" /></a>';
+print '</center>';
 
 llxFooter();
 
