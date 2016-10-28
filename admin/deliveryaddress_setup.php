@@ -108,13 +108,13 @@ print '<td align="center" width="100">'.$langs->trans("Value").'</td>'."\n";
 // Example with a yes / no select
 $var=!$var;
 print '<tr '.$bc[$var].'>';
-print '<td>'.$langs->trans("ParamLabel").'</td>';
+print '<td>'.$langs->trans("ParamDELIVERYADDRESS_SHOW_PHONE").'</td>';
 print '<td align="center" width="20">&nbsp;</td>';
 print '<td align="right" width="300">';
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
-print '<input type="hidden" name="action" value="set_CONSTNAME">';
-print $form->selectyesno("CONSTNAME",$conf->global->CONSTNAME,1);
+print '<input type="hidden" name="action" value="set_DELIVERYADDRESS_SHOW_PHONE">';
+print $form->selectyesno("DELIVERYADDRESS_SHOW_PHONE",$conf->global->CONSTNAME,1);
 print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
 print '</form>';
 print '</td></tr>';

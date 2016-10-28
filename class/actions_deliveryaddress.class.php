@@ -64,15 +64,16 @@ class ActionsDeliveryAddress
 		if (in_array('ordercard',explode(':',$parameters['context']))
 			|| in_array('propalcard',explode(':',$parameters['context']))
 			|| in_array('invoicecard',explode(':',$parameters['context']))
-			|| in_array('ordersuppliercard',explode(':',$parameters['context']))
+			|| in_array('ordersuppliercard',explode(':',$parameters['context']))
 			)
 		{
-			global $db, $user;
+			global $db, $user, $conf, $mysoc;
 			$outputlangs = $parameters['outputlangs'];
 			
 			dol_include_once('/contact/class/contact.class.php');
 			dol_include_once('/core/lib/pdf.lib.php');
-			$address = '';
+			$txt = '';
+			
 			$TContacts = $object->liste_contact();
 			foreach($TContacts as $c) {
 				if($c['code'] == 'SHIPPING') {
@@ -80,20 +81,29 @@ class ActionsDeliveryAddress
 					$contact->fetch($c['id']);
 					$soc = new Societe($db);
 					$soc->fetch($c['socid']);
+					
+					$oldconf = $conf;
 
-					$address = $outputlangs->trans("DeliveryAddress")."\n";
-					$address.= !empty($contact->socname) ? $contact->socname."\n" : "";
-					$address.= pdf_build_address($outputlangs, $mysoc, $soc, $contact, 1, 'target');
-					$address.= !empty($contact->phone_pro) ? "\n".$outputlangs->transnoentities("Phone").": ".$outputlangs->convToOutputCharset($contact->phone_pro) : "";
-					$address.= !empty($object->note_public) ? "\n" : "";
+					$title = $outputlangs->trans("DeliveryAddress")." :\n";
+					$socname = !empty($contact->socname) ? $contact->socname."\n" : "";
+					
+					$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = true;
+					$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = false;
+					$address = pdf_build_address($outputlangs, $mysoc, $soc, $contact, 1, 'target');
+					$conf = $oldconf;
+					
+					$phone = (!empty($contact->phone_pro) && !empty($conf->global->DELIVERYADDRESS_SHOW_PHONE)) ? "\n".$outputlangs->transnoentities("Phone")." : ".$outputlangs->convToOutputCharset($contact->phone_pro) : "";
+					$end = !empty($object->note_public) ? "\n" : "";
+					
+					$txt = $title . $socname . $address . $phone . $end;
 					
 					break;
 				}
 			}
 			
 			// Gestion des sauts de lignes si la note était en HTML de base
-			if(dol_textishtml($object->note_public)) $object->note_public = dol_nl2br($address).$object->note_public;
-			else $object->note_public = $address.$object->note_public;
+			if(dol_textishtml($object->note_public)) $object->note_public = dol_nl2br($txt).$object->note_public;
+			else $object->note_public = $txt.$object->note_public;
 		}
 	}
 }

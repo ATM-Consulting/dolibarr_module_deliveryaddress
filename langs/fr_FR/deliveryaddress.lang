@@ -5,3 +5,5 @@ ATMAbout = Ce module a été développé par <a href="http://www.atm-consulting.
 
 DeliveryAddressSetup = Configuration du module Adresse de livraison
 DeliveryAddressAbout = A propos du module Adresse de livraison
+
+ParamDELIVERYADDRESS_SHOW_PHONE = Afficher le numéro de téléphone associé au contact/adresse
