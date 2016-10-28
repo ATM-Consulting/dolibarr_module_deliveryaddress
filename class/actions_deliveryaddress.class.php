@@ -72,6 +72,7 @@ class ActionsDeliveryAddress
 			
 			dol_include_once('/contact/class/contact.class.php');
 			dol_include_once('/core/lib/pdf.lib.php');
+			$wysiwyg = !empty($conf->fckeditor->enabled);
 			$txt = '';
 			
 			$TContacts = $object->liste_contact();
@@ -86,13 +87,20 @@ class ActionsDeliveryAddress
 
 					$title = $outputlangs->trans("DeliveryAddress")." :\n";
 					$socname = !empty($contact->socname) ? $contact->socname."\n" : "";
+					if($wysiwyg) $socname = '<strong>'.$socname.'</strong>';
 					
 					$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = true;
 					$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = false;
 					$address = pdf_build_address($outputlangs, $mysoc, $soc, $contact, 1, 'target');
 					$conf = $oldconf;
 					
-					$phone = (!empty($contact->phone_pro) && !empty($conf->global->DELIVERYADDRESS_SHOW_PHONE)) ? "\n".$outputlangs->transnoentities("Phone")." : ".$outputlangs->convToOutputCharset($contact->phone_pro) : "";
+					$phone = '';
+					if(!empty($conf->global->DELIVERYADDRESS_SHOW_PHONE)) {
+						if (! empty($contact->phone_pro) || ! empty($contact->phone_mobile)) $phone .= ($address ? "\n" : '' ).$outputlangs->transnoentities("Phone").": ";
+						if (! empty($contact->phone_pro)) $phone .= $outputlangs->convToOutputCharset($contact->phone_pro);
+						if (! empty($contact->phone_pro) && ! empty($contact->phone_mobile)) $phone .= " / ";
+						if (! empty($contact->phone_mobile)) $phone .= $outputlangs->convToOutputCharset($contact->phone_mobile);
+					}
 					$end = !empty($object->note_public) ? "\n" : "";
 					
 					$txt = $title . $socname . $address . $phone . $end;
@@ -102,7 +110,7 @@ class ActionsDeliveryAddress
 			}
 			
 			// Gestion des sauts de lignes si la note était en HTML de base
-			if(dol_textishtml($object->note_public)) $object->note_public = dol_nl2br($txt).$object->note_public;
+			if($wysiwyg) $object->note_public = dol_nl2br($txt).$object->note_public;
 			else $object->note_public = $txt.$object->note_public;
 		}
 	}
