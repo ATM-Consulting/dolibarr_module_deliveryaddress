@@ -75,7 +75,8 @@ class ActionsDeliveryAddress
 			$wysiwyg = !empty($conf->fckeditor->enabled);
 			$txt = '';
 			
-			$TContacts = $object->liste_contact();
+			$TContacts = array();
+			if(method_exists($object, 'liste_contact')) $TContacts = $object->liste_contact();
 			foreach($TContacts as $c) {
 				if($c['code'] == 'SHIPPING') {
 					$contact = new Contact($db);
