@@ -84,16 +84,18 @@ class ActionsDeliveryAddress
 					$soc = new Societe($db);
 					$soc->fetch($c['socid']);
 					
-					$oldconf = $conf;
+					
 
 					$title = $outputlangs->trans("DeliveryAddress")." :\n";
 					$socname = !empty($contact->socname) ? $contact->socname."\n" : "";
 					if($wysiwyg) $socname = '<strong>'.$socname.'</strong>';
-					
+					$maconfTVA = $conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS;
+					$maconfTargetDetails = $conf->global->MAIN_PDF_ADDALSOTARGETDETAILS;
 					$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = true;
 					$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = false;
 					$address = pdf_build_address($outputlangs, $mysoc, $soc, $contact, 1, 'target');
-					$conf = $oldconf;
+					$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = $maconfTVA;
+					$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = $maconfTargetDetails;
 					
 					$phone = '';
 					if(!empty($conf->global->DELIVERYADDRESS_SHOW_PHONE)) {
