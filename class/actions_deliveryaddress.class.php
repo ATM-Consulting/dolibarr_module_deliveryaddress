@@ -69,6 +69,7 @@ class ActionsDeliveryAddress
 		{
 			global $db, $user, $conf, $mysoc;
 			$outputlangs = $parameters['outputlangs'];
+			$outputlangs->load('deliveryaddress@deliveryaddress');
 			
 			dol_include_once('/contact/class/contact.class.php');
 			dol_include_once('/core/lib/pdf.lib.php');
@@ -84,16 +85,18 @@ class ActionsDeliveryAddress
 					$soc = new Societe($db);
 					$soc->fetch($c['socid']);
 					
-					$oldconf = $conf;
+					
 
 					$title = $outputlangs->trans("DeliveryAddress")." :\n";
 					$socname = !empty($contact->socname) ? $contact->socname."\n" : "";
 					if($wysiwyg) $socname = '<strong>'.$socname.'</strong>';
-					
+					$maconfTVA = $conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS;
+					$maconfTargetDetails = $conf->global->MAIN_PDF_ADDALSOTARGETDETAILS;
 					$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = true;
 					$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = false;
 					$address = pdf_build_address($outputlangs, $mysoc, $soc, $contact, 1, 'target');
-					$conf = $oldconf;
+					$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = $maconfTVA;
+					$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = $maconfTargetDetails;
 					
 					$phone = '';
 					if(!empty($conf->global->DELIVERYADDRESS_SHOW_PHONE)) {
@@ -107,6 +110,38 @@ class ActionsDeliveryAddress
 					$txt = $title . $socname . $address . $phone . $end;
 					
 					break;
+				}
+			}
+			
+			if (!empty($conf->global->DELIVERYADDRESS_SHOW_INFO_REPONSABLE_RECEPTION))
+			{
+				$TContacts = array();
+				if(method_exists($object, 'liste_contact')) $TContacts = $object->liste_contact(-1, 'internal');
+				foreach($TContacts as $c)
+				{
+					// Responsable réception commande fournisseur
+					if($c['code'] == 'SHIPPING')
+					{
+						$u = new User($db);
+						$u->fetch($c['id']);
+
+						if (empty($object->note_public)) $txt .= "\n";
+
+						$title = $outputlangs->trans("ReceiptContact")." :\n";
+						$name = dolGetFirstLastname($u->firstname, $u->lastname)."\n";
+						if($wysiwyg) $name = '<strong>'.$name.'</strong>';
+						
+						$phone = $outputlangs->transnoentities("Phone").': ';
+						if (!empty($u->office_phone)) $phone.= $u->office_phone;
+						if (!empty($u->office_phone) && !empty($u->user_mobile)) $phone.= ' / '.$u->user_mobile;
+						else if (!empty($u->user_mobile)) $phone .= $u->user_mobile;
+						
+						$end = !empty($object->note_public) ? "\n" : "";
+						
+						$txt.= $title . $name . $phone . $end;
+						
+						break;
+					}
 				}
 			}
 			

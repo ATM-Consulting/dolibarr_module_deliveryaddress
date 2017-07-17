@@ -7,3 +7,6 @@ DeliveryAddressSetup = Configuration du module Adresse de livraison
 DeliveryAddressAbout = A propos du module Adresse de livraison
 
 ParamDELIVERYADDRESS_SHOW_PHONE = Afficher le numéro de téléphone associé au contact/adresse
+DELIVERYADDRESS_SHOW_INFO_REPONSABLE_RECEPTION=Ajouter les informations de contact du "Responsable réception commande fournisseur"
+
+ReceiptContact=Responsable réception
