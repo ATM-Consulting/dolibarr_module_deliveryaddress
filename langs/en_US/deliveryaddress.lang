@@ -5,3 +5,9 @@ ATMAbout = This module has been developed by <a href="http://www.atm-consulting.
 
 DeliveryAddressSetup = Delivery address module setup
 DeliveryAddressAbout = About Delivery address
+
+DELIVERYADDRESS_DISPLAY_ADDRESS_ON_INVOICECARD=Afficher l'adresse de livraison sur les factures clients
+DELIVERYADDRESS_DISPLAY_ADDRESS_ON_ORDERCARD=Afficher l'adresse de livraison sur les commandes clients
+
+DELIVERYADDRESS_DISPLAY_ADDRESS_ON_PROPALCARD=Afficher l'adresse de livraison sur les factures fournisseurs
+DELIVERYADDRESS_DISPLAY_ADDRESS_ON_ORDERSUPPLIERCARD=Afficher l'adresse de livraison sur les commandes fournisseurs
