@@ -9,4 +9,15 @@ DeliveryAddressAbout = A propos du module Adresse de livraison
 ParamDELIVERYADDRESS_SHOW_PHONE = Afficher le numéro de téléphone associé au contact/adresse
 DELIVERYADDRESS_SHOW_INFO_REPONSABLE_RECEPTION=Ajouter les informations de contact du "Responsable réception commande fournisseur"
 
+DELIVERYADDRESS_HIDE_ADDRESS_ON_INVOICECARD=Cacher l'adresse de livraison sur les factures clients
+DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERCARD=Cacher l'adresse de livraison sur les commandes clients
+
+DELIVERYADDRESS_HIDE_ADDRESS_ON_PROPALCARD=Cacher l'adresse de livraison sur les factures fournisseurs
+DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERSUPPLIERCARD=Cacher l'adresse de livraison sur les commandes fournisseurs
+
+DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES=Séparateur avec les notes publiques si elle est renseignée
+DeliveryAddressSepReturnCar1=Retour à la ligne simple
+DeliveryAddressSepReturnCar2=Retour à la ligne double
+DeliveryAddressSepdash=Ligne de -----
+
 ReceiptContact=Responsable réception
