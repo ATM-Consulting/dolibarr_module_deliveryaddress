@@ -106,7 +106,23 @@ class ActionsDeliveryAddress
 						if (! empty($contact->phone_pro) && ! empty($contact->phone_mobile)) $phone .= " / ";
 						if (! empty($contact->phone_mobile)) $phone .= $outputlangs->convToOutputCharset($contact->phone_mobile);
 					}
-					$end = !empty($object->note_public) ? "\n" : "";
+					if (!empty($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES)){
+						switch ($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES) {
+							case 'returnChar1':
+								$sep="\r\n";
+								break;
+							case 'returnChar2':
+								$sep="\r\n\r\n";
+								break;
+							case 'dash':
+								$sep="\r\n-----------\r\n";
+								break;
+						}
+					} else {
+						$sep="\r\n";
+					}
+
+					$end = !empty($object->note_public) ? $sep : "";
 
 					$txt = $title . $socname . $address . $phone . $end;
 
@@ -137,7 +153,22 @@ class ActionsDeliveryAddress
 						if (!empty($u->office_phone) && !empty($u->user_mobile)) $phone.= ' / '.$u->user_mobile;
 						else if (!empty($u->user_mobile)) $phone .= $u->user_mobile;
 
-						$end = !empty($object->note_public) ? "\n" : "";
+						if (!empty($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES)){
+							switch ($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES) {
+								case 'returnChar1':
+									$sep="\r\n";
+									break;
+								case 'returnChar2':
+									$sep="\r\n\r\n";
+									break;
+								case 'dash':
+									$sep="\r\n-----------\r\n";
+									break;
+							}
+						} else {
+							$sep="\r\n";
+						}
+						$end = !empty($object->note_public) ? $sep : "";
 
 						$txt.= $title . $name . $phone . $end;
 

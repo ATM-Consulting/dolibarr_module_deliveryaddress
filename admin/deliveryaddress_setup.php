@@ -179,6 +179,23 @@ print ajax_constantonoff('DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERSUPPLIERCARD');
 print '</form>';
 print '</td></tr>';
 
+
+$var=!$var;
+print '<tr '.$bc[$var].'>';
+print '<td>'.$langs->trans("DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES").'</td>';
+print '<td align="center" width="20">&nbsp;</td>';
+print '<td align="center" width="300">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">'; // Keep form because ajax_constantonoff return single link with <a> if the js is disabled
+print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="action" value="set_DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES">';
+$arrayType=array('returnChar1'=>$langs->trans('DeliveryAddressSepReturnCar1'),
+                 'returnChar2'=>$langs->trans('DeliveryAddressSepReturnCar2'),
+                 'dash'=>$langs->trans('DeliveryAddressSepdash'));
+print $form->selectarray("DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES",$arrayType,$conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES,1);
+print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
+print '</form>';
+print '</td></tr>';
+
 print '</table>';
 
 llxFooter();
