@@ -61,13 +61,14 @@ class ActionsDeliveryAddress
 	 */
 	function beforePDFCreation($parameters, &$object, &$action, $hookmanager)
 	{
-		if (in_array('ordercard',explode(':',$parameters['context']))
-			|| in_array('propalcard',explode(':',$parameters['context']))
-			|| in_array('invoicecard',explode(':',$parameters['context']))
-			|| in_array('ordersuppliercard',explode(':',$parameters['context']))
+		global $db, $user, $conf, $mysoc;
+		if (
+			(	in_array('ordercard',explode(':',$parameters['context'])) && empty($conf->global->DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERCARD))
+			|| 	(in_array('propalcard',explode(':',$parameters['context'])) && empty($conf->global->DELIVERYADDRESS_HIDE_ADDRESS_ON_PROPALCARD))
+			||	(in_array('invoicecard',explode(':',$parameters['context'])) && empty($conf->global->DELIVERYADDRESS_HIDE_ADDRESS_ON_INVOICECARD))
+			|| 	(in_array('ordersuppliercard',explode(':',$parameters['context'])) && empty($conf->global->DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERSUPPLIERCARD))
 			)
 		{
-			global $db, $user, $conf, $mysoc;
 			if (!empty($object->flag_delivery_address_in_public_note)) return 0;
 			$outputlangs = $parameters['outputlangs'];
 			$outputlangs->load('deliveryaddress@deliveryaddress');
@@ -106,7 +107,23 @@ class ActionsDeliveryAddress
 						if (! empty($contact->phone_pro) && ! empty($contact->phone_mobile)) $phone .= " / ";
 						if (! empty($contact->phone_mobile)) $phone .= $outputlangs->convToOutputCharset($contact->phone_mobile);
 					}
-					$end = !empty($object->note_public) ? "\n" : "";
+					if (!empty($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES)){
+						switch ($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES) {
+							case 'returnChar1':
+								$sep="\r\n";
+								break;
+							case 'returnChar2':
+								$sep="\r\n\r\n";
+								break;
+							case 'dash':
+								$sep="\r\n-----------\r\n";
+								break;
+						}
+					} else {
+						$sep="\r\n";
+					}
+
+					$end = !empty($object->note_public) ? $sep : "";
 
 					$txt = $title . $socname . $address . $phone . $end;
 
@@ -137,7 +154,22 @@ class ActionsDeliveryAddress
 						if (!empty($u->office_phone) && !empty($u->user_mobile)) $phone.= ' / '.$u->user_mobile;
 						else if (!empty($u->user_mobile)) $phone .= $u->user_mobile;
 
-						$end = !empty($object->note_public) ? "\n" : "";
+						if (!empty($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES)){
+							switch ($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES) {
+								case 'returnChar1':
+									$sep="\r\n";
+									break;
+								case 'returnChar2':
+									$sep="\r\n\r\n";
+									break;
+								case 'dash':
+									$sep="\r\n-----------\r\n";
+									break;
+							}
+						} else {
+							$sep="\r\n";
+						}
+						$end = !empty($object->note_public) ? $sep : "";
 
 						$txt.= $title . $name . $phone . $end;
 
