@@ -68,14 +68,15 @@ class ActionsDeliveryAddress
 			)
 		{
 			global $db, $user, $conf, $mysoc;
+			if (!empty($object->flag_delivery_address_in_public_note)) return 0;
 			$outputlangs = $parameters['outputlangs'];
 			$outputlangs->load('deliveryaddress@deliveryaddress');
-			
+
 			dol_include_once('/contact/class/contact.class.php');
 			dol_include_once('/core/lib/pdf.lib.php');
 			$wysiwyg = !empty($conf->fckeditor->enabled);
 			$txt = '';
-			
+
 			$TContacts = array();
 			if(method_exists($object, 'liste_contact')) $TContacts = $object->liste_contact();
 			foreach($TContacts as $c) {
@@ -84,8 +85,8 @@ class ActionsDeliveryAddress
 					$contact->fetch($c['id']);
 					$soc = new Societe($db);
 					$soc->fetch($c['socid']);
-					
-					
+
+
 
 					$title = $outputlangs->trans("DeliveryAddress")." :\n";
 					$socname = !empty($contact->socname) ? $contact->socname."\n" : "";
@@ -97,7 +98,7 @@ class ActionsDeliveryAddress
 					$address = pdf_build_address($outputlangs, $mysoc, $soc, $contact, 1, 'target');
 					$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = $maconfTVA;
 					$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = $maconfTargetDetails;
-					
+
 					$phone = '';
 					if(!empty($conf->global->DELIVERYADDRESS_SHOW_PHONE)) {
 						if (! empty($contact->phone_pro) || ! empty($contact->phone_mobile)) $phone .= ($address ? "\n" : '' ).$outputlangs->transnoentities("Phone").": ";
@@ -106,13 +107,13 @@ class ActionsDeliveryAddress
 						if (! empty($contact->phone_mobile)) $phone .= $outputlangs->convToOutputCharset($contact->phone_mobile);
 					}
 					$end = !empty($object->note_public) ? "\n" : "";
-					
+
 					$txt = $title . $socname . $address . $phone . $end;
-					
+
 					break;
 				}
 			}
-			
+
 			if (!empty($conf->global->DELIVERYADDRESS_SHOW_INFO_REPONSABLE_RECEPTION))
 			{
 				$TContacts = array();
@@ -130,24 +131,25 @@ class ActionsDeliveryAddress
 						$title = $outputlangs->trans("ReceiptContact")." :\n";
 						$name = dolGetFirstLastname($u->firstname, $u->lastname)."\n";
 						if($wysiwyg) $name = '<strong>'.$name.'</strong>';
-						
+
 						$phone = $outputlangs->transnoentities("Phone").': ';
 						if (!empty($u->office_phone)) $phone.= $u->office_phone;
 						if (!empty($u->office_phone) && !empty($u->user_mobile)) $phone.= ' / '.$u->user_mobile;
 						else if (!empty($u->user_mobile)) $phone .= $u->user_mobile;
-						
+
 						$end = !empty($object->note_public) ? "\n" : "";
-						
+
 						$txt.= $title . $name . $phone . $end;
-						
+
 						break;
 					}
 				}
 			}
-			
+
 			// Gestion des sauts de lignes si la note était en HTML de base
 			if($wysiwyg) $object->note_public = dol_nl2br($txt).$object->note_public;
 			else $object->note_public = $txt.$object->note_public;
+			$object->flag_delivery_address_in_public_note = true;
 		}
 	}
 }
