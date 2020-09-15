@@ -69,7 +69,6 @@ class ActionsDeliveryAddress
 			|| 	(in_array('ordersuppliercard',explode(':',$parameters['context'])) && empty($conf->global->DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERSUPPLIERCARD))
 			)
 		{
-			if (!empty($object->flag_delivery_address_in_public_note)) return 0;
 			$outputlangs = $parameters['outputlangs'];
 			$outputlangs->load('deliveryaddress@deliveryaddress');
 
@@ -179,9 +178,25 @@ class ActionsDeliveryAddress
 			}
 
 			// Gestion des sauts de lignes si la note était en HTML de base
+			$object->note_public_original = $object->note_public;
 			if($wysiwyg) $object->note_public = dol_nl2br($txt).$object->note_public;
 			else $object->note_public = $txt.$object->note_public;
-			$object->flag_delivery_address_in_public_note = true;
 		}
+	}
+
+	/**
+	 * @param array        $parameters
+	 * @param CommonObject $object
+	 * @param string       $action
+	 * @param HookManager  $hookmanager
+	 */
+	function afterPDFCreation($parameters, &$object, &$action, $hookmanager)
+	{
+		// clean up the object if it was altered by beforePDFCreation
+		$object = $parameters['object'];
+		if (isset($object->note_public_original)) {
+			$object->note_public = $object->note_public_original;
+		}
+		return 0;
 	}
 }
