@@ -178,7 +178,9 @@ class ActionsDeliveryAddress
 			}
 
 			// Gestion des sauts de lignes si la note était en HTML de base
-			$object->note_public_original = $object->note_public;
+			if (!isset($object->note_public_original)) {
+				$object->note_public_original = $object->note_public;
+			}
 			if($wysiwyg) $object->note_public = dol_nl2br($txt).$object->note_public;
 			else $object->note_public = $txt.$object->note_public;
 		}
