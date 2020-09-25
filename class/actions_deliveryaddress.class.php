@@ -66,6 +66,7 @@ class ActionsDeliveryAddress
 		$outputlangs = $parameters['outputlangs'];
 		$outputlangs->load('deliveryaddress@deliveryaddress');
 		$txt = '';
+		$wysiwyg = !empty($conf->fckeditor->enabled);
 
 		if (
 			(	in_array('ordercard',explode(':',$parameters['context'])) && empty($conf->global->DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERCARD))
@@ -76,7 +77,6 @@ class ActionsDeliveryAddress
 		{
 			dol_include_once('/contact/class/contact.class.php');
 			dol_include_once('/core/lib/pdf.lib.php');
-			$wysiwyg = !empty($conf->fckeditor->enabled);
 			$TContacts = array();
 			if(method_exists($object, 'liste_contact')) $TContacts = $object->liste_contact();
 			foreach($TContacts as $c) {
@@ -143,7 +143,6 @@ class ActionsDeliveryAddress
 
 			dol_include_once('/contact/class/contact.class.php');
 			dol_include_once('/core/lib/pdf.lib.php');
-			$wysiwyg = !empty($conf->fckeditor->enabled);
 
 
 			$TContacts = array();
@@ -177,12 +176,14 @@ class ActionsDeliveryAddress
 			}
 		}
 
-		// Gestion des sauts de lignes si la note était en HTML de base
-		if (!isset($object->note_public_original)) {
-			$object->note_public_original = $object->note_public;
+		if(!empty($txt)){
+			// Gestion des sauts de lignes si la note était en HTML de base
+			if (!isset($object->note_public_original)) {
+				$object->note_public_original = $object->note_public;
+			}
+			if($wysiwyg) $object->note_public = dol_nl2br($txt).$object->note_public;
+			else $object->note_public = $txt.$object->note_public;
 		}
-		if($wysiwyg) $object->note_public = dol_nl2br($txt).$object->note_public;
-		else $object->note_public = $txt.$object->note_public;
 	}
 
 	/**
