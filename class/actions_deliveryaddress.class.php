@@ -137,8 +137,8 @@ class ActionsDeliveryAddress
 
 		if (
 			!empty($parameters['DELIVERYADDRESS_DISPLAY_BILLED']) // IN case of custom PDF
-			||  (in_array('expeditioncard',explode(':',$parameters['context'])) && empty($conf->global->DELIVERYADDRESS_DISPLAY_BILLED_ON_EXPEDITIONCARD))
-			|| 	(in_array('deliverycard',explode(':',$parameters['context'])) && empty($conf->global->DELIVERYADDRESS_DISPLAY_BILLED_ON_DELIVERYCARD))
+			||  (in_array('expeditioncard',explode(':',$parameters['context'])) && !empty($conf->global->DELIVERYADDRESS_DISPLAY_BILLED_ON_EXPEDITIONCARD))
+			|| 	(in_array('deliverycard',explode(':',$parameters['context'])) && !empty($conf->global->DELIVERYADDRESS_DISPLAY_BILLED_ON_DELIVERYCARD))
 		) {
 
 			dol_include_once('/contact/class/contact.class.php');
