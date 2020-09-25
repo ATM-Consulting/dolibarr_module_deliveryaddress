@@ -31,6 +31,7 @@ if (! $res) {
 // Libraries
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
 require_once '../lib/deliveryaddress.lib.php';
+dol_include_once('abricot/includes/lib/admin.lib.php');
 
 // Translations
 $langs->load("deliveryaddress@deliveryaddress");
@@ -83,17 +84,27 @@ llxHeader('', $langs->trans($page_name));
 // Subheader
 $linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">'
     . $langs->trans("BackToModuleList") . '</a>';
-print_fiche_titre($langs->trans($page_name), $linkback);
 
+print load_fiche_titre($langs->trans($page_name), $linkback);
 // Configuration header
 $head = deliveryaddressAdminPrepareHead();
+$notab = -1;
 dol_fiche_head(
     $head,
     'settings',
     $langs->trans("Module104060Name"),
-    0,
+	$notab,
     "deliveryaddress@deliveryaddress"
 );
+
+
+dol_fiche_end($notab);
+
+// Check abricot version
+if(!function_exists('setup_print_title') || !function_exists('isAbricotMinVersion') || isAbricotMinVersion('3.1.0') < 0 ){
+	print '<div class="error" >'.$langs->trans('AbricotNeedUpdate').' : <a href="http://wiki.atm-consulting.fr/index.php/Accueil#Abricot" target="_blank"><i class="fa fa-info"></i> Wiki</a></div>';
+	exit;
+}
 
 // Setup page goes here
 $form=new Form($db);
@@ -195,6 +206,18 @@ print $form->selectarray("DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES",$arrayType,$c
 print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
 print '</form>';
 print '</td></tr>';
+
+
+
+
+
+// *************************************************
+// CONFIGURATION AJOUT DE L'ADRESSE DE FACTURATION *
+// *************************************************
+setup_print_title('OptionsForBillingAddress');
+
+setup_print_on_off('DELIVERYADDRESS_DISPLAY_BILLED_ON_EXPEDITIONCARD');
+setup_print_on_off('DELIVERYADDRESS_DISPLAY_BILLED_ON_DELIVERYCARD');
 
 print '</table>';
 

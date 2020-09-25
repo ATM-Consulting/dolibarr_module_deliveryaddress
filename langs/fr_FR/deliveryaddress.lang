@@ -21,3 +21,10 @@ DeliveryAddressSepReturnCar2=Retour à la ligne double
 DeliveryAddressSepdash=Ligne de -----
 
 ReceiptContact=Responsable réception
+
+OptionsForBillingAddress = Option sur l'adresse de facturation
+DELIVERYADDRESS_DISPLAY_BILLED_ON_EXPEDITIONCARD = Afficher l'adresse de facturation sur les expéditions
+DELIVERYADDRESS_DISPLAY_BILLED_ON_EXPEDITIONCARD_HELP = L'adresse est afficher dans les notes du document lorsqu'un contact de facturation (code BILLING) est associé au document
+DELIVERYADDRESS_DISPLAY_BILLED_ON_DELIVERYCARD = Afficher l'adresse de facturation sur les bons de livraisons
+DELIVERYADDRESS_DISPLAY_BILLED_ON_DELIVERYCARD_HELP = L'adresse est afficher dans les notes du document lorsqu'un contact de facturation (code BILLING) est associé au document
+BillingAddress = Adresse de facturation
