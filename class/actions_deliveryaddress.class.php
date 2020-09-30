@@ -81,7 +81,7 @@ class ActionsDeliveryAddress
 			if(method_exists($object, 'liste_contact')) $TContacts = $object->liste_contact();
 			foreach($TContacts as $c) {
 				if($c['code'] == 'SHIPPING') {
-					$txt.= $this->addConctactToString($c, $outputlangs, $wysiwyg = false);
+					$txt.= $this->addConctactToString($object, $c, $outputlangs, $wysiwyg = false);
 
 					break;
 				}
@@ -170,7 +170,7 @@ class ActionsDeliveryAddress
 
 			foreach ($TContacts as $c) {
 				if ($c['code'] == 'BILLING') {
-					$txt.= $this->addConctactToString($c, $outputlangs, $wysiwyg);
+					$txt.= $this->addConctactToString($object, $c, $outputlangs, $wysiwyg);
 					break;
 				}
 			}
@@ -187,12 +187,13 @@ class ActionsDeliveryAddress
 	}
 
 	/**
+	 * @param commonObject $object
 	 * @param array $c a contact item from commonobject->liste_contact()
 	 * @param Translate $outputlangs
 	 * @param bool $wysiwyg
 	 * @return string
 	 */
-	function addConctactToString($c, $outputlangs, $wysiwyg = false){
+	function addConctactToString($object, $c, $outputlangs, $wysiwyg = false){
 
 		global $db, $conf, $mysoc;
 
