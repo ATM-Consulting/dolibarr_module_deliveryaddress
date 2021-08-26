@@ -99,10 +99,10 @@ class ActionsDeliveryAddress
 						$u = new User($db);
 						$u->fetch($c['id']);
 
-						if (empty($object->note_public)) $txt .= "\n";
+						if (empty($object->note_public)) $txt .= "<br>";
 
-						$title = $outputlangs->trans("ReceiptContact")." :\n";
-						$name = dolGetFirstLastname($u->firstname, $u->lastname)."\n";
+						$title = $outputlangs->trans("ReceiptContact")." :<br>";
+						$name = dolGetFirstLastname($u->firstname, $u->lastname)."<br>";
 						if($wysiwyg) $name = '<strong>'.$name.'</strong>';
 
 						$phone = $outputlangs->transnoentities("Phone").': ';
@@ -113,17 +113,17 @@ class ActionsDeliveryAddress
 						if (!empty($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES)){
 							switch ($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES) {
 								case 'returnChar1':
-									$sep="\r\n";
+									$sep="<br>";
 									break;
 								case 'returnChar2':
-									$sep="\r\n\r\n";
+									$sep="<br><br>";
 									break;
 								case 'dash':
-									$sep="\r\n-----------\r\n";
+									$sep="<br>-----------<br>";
 									break;
 							}
 						} else {
-							$sep="\r\n";
+							$sep="<br>";
 						}
 						$end = !empty($object->note_public) ? $sep : "";
 
@@ -203,26 +203,26 @@ class ActionsDeliveryAddress
 		$soc->fetch($c['socid']);
 
 		if($c['code'] == 'SHIPPING') {
-			$title = $outputlangs->trans("DeliveryAddress") . " :\n";
+			$title = $outputlangs->trans("DeliveryAddress") . " :<br>";
 		}
 
 		if ($c['code'] == 'BILLING') {
-			$title = $outputlangs->trans("BillingAddress") . " :\n";
+			$title = $outputlangs->trans("BillingAddress") . " :<br>";
 		}
 
-		$socname = !empty($contact->socname) ? $contact->socname . "\n" : "";
+		$socname = !empty($contact->socname) ? $contact->socname . "<br>" : "";
 		if ($wysiwyg) $socname = '<strong>' . $socname . '</strong>';
 		$maconfTVA = $conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS;
 		$maconfTargetDetails = $conf->global->MAIN_PDF_ADDALSOTARGETDETAILS;
 		$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = true;
 		$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = false;
-		$address = pdf_build_address($outputlangs, $mysoc, $soc, $contact, 1, 'target');
+		$address = pdf_build_address($outputlangs, $mysoc, $soc, $contact, 1, 'target', null, "<br>");
 		$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = $maconfTVA;
 		$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = $maconfTargetDetails;
 
 		$phone = '';
 		if (!empty($conf->global->DELIVERYADDRESS_SHOW_PHONE)) {
-			if (!empty($contact->phone_pro) || !empty($contact->phone_mobile)) $phone .= ($address ? "\n" : '') . $outputlangs->transnoentities("Phone") . ": ";
+			if (!empty($contact->phone_pro) || !empty($contact->phone_mobile)) $phone .= ($address ? "<br>" : '') . $outputlangs->transnoentities("Phone") . ": ";
 			if (!empty($contact->phone_pro)) $phone .= $outputlangs->convToOutputCharset($contact->phone_pro);
 			if (!empty($contact->phone_pro) && !empty($contact->phone_mobile)) $phone .= " / ";
 			if (!empty($contact->phone_mobile)) $phone .= $outputlangs->convToOutputCharset($contact->phone_mobile);
@@ -230,17 +230,17 @@ class ActionsDeliveryAddress
 		if (!empty($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES)) {
 			switch ($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES) {
 				case 'returnChar1':
-					$sep = "\r\n";
+					$sep = "<br>";
 					break;
 				case 'returnChar2':
-					$sep = "\r\n\r\n";
+					$sep = "<br><br>";
 					break;
 				case 'dash':
-					$sep = "\r\n-----------\r\n";
+					$sep = "<br>-----------<br>";
 					break;
 			}
 		} else {
-			$sep = "\r\n";
+			$sep = "<br>";
 		}
 
 		$end = !empty($object->note_public) ? $sep : "";

@@ -1,9 +1,3 @@
-STRUCTURE STANDARD POUR CREATION DE MODULE DOLIBARR - ATM
+# Delivery address - Dolibarr mod
 
-
-AJOUT DE L'APPEL DU DOACTION POUR LE HOOK
-
-htdocs -> fourn -> commande -> fiche.php -> ligne 99 environ
-
-$parameters=array('socid'=>$socid);
-$reshook=$hookmanager->executeHooks('doActions',$parameters,$object,$action);    // Note that $action and $object may have been modified by some hooks
+This module allows you to add the delivery address of your contact in your customer/supplier order PDF.
