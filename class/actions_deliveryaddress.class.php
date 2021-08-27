@@ -81,7 +81,7 @@ class ActionsDeliveryAddress
 			if(method_exists($object, 'liste_contact')) $TContacts = $object->liste_contact();
 			foreach($TContacts as $c) {
 				if($c['code'] == 'SHIPPING') {
-					$txt.= $this->addConctactToString($object, $c, $outputlangs, $wysiwyg = false);
+					$txt.= $this->addConctactToString($object, $c, $outputlangs, $wysiwyg);
 
 					break;
 				}
