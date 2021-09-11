@@ -1,3 +1,11 @@
 # Delivery address - Dolibarr mod
 
 This module allows you to add the delivery address of your contact in your customer/supplier order PDF.
+
+# Requirements
+
+Befor installing this module, install abricot. Abricot is a collection of specific ATM functions and classes.
+The latest version dolibarr_module_abricot-3.0 is not working so install dolibarr_module_abricot-main.
+https://github.com/ATM-Consulting/dolibarr_module_abricot
+
+
