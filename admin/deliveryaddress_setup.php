@@ -89,7 +89,7 @@ print load_fiche_titre($langs->trans($page_name), $linkback);
 // Configuration header
 $head = deliveryaddressAdminPrepareHead();
 $notab = -1;
-dol_get_fiche_head(
+echo dol_get_fiche_head(
     $head,
     'settings',
     $langs->trans("Module104060Name"),
@@ -98,7 +98,7 @@ dol_get_fiche_head(
 );
 
 
-dol_get_fiche_end($notab);
+echo dol_get_fiche_end($notab);
 
 // Check abricot version
 if(!function_exists('setup_print_title') || !function_exists('isAbricotMinVersion') || isAbricotMinVersion('3.1.0') < 0 ){
