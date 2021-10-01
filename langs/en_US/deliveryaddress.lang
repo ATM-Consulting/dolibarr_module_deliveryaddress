@@ -6,15 +6,25 @@ ATMAbout = This module has been developed by <a href="http://www.atm-consulting.
 DeliveryAddressSetup = Delivery address module setup
 DeliveryAddressAbout = About Delivery address
 
-DELIVERYADDRESS_HIDE_ADDRESS_ON_INVOICECARD=Cacher l'adresse de livraison sur les factures clients
-DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERCARD=Cacher l'adresse de livraison sur les commandes clients
+ParamDELIVERYADDRESS_SHOW_PHONE = Display the phone number associated with the contact / address
+DELIVERYADDRESS_SHOW_INFO_REPONSABLE_RECEPTION=Add the contact information of the "Supplier order reception manager"
 
-DELIVERYADDRESS_HIDE_ADDRESS_ON_PROPALCARD=Cacher l'adresse de livraison sur les factures fournisseurs
-DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERSUPPLIERCARD=Cacher l'adresse de livraison sur les commandes fournisseurs
+DELIVERYADDRESS_HIDE_ADDRESS_ON_INVOICECARD=Hide the delivery address on customer invoices
+DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERCARD=Hide the delivery address on customer orders
 
-DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES=Séparateur avec les notes publiques si elle est renseignée
-DeliveryAddressSepReturnCar1=Retour à la ligne simple
-DeliveryAddressSepReturnCar2=Retour à la ligne double
-DeliveryAddressSepdash=Ligne de -----
+DELIVERYADDRESS_HIDE_ADDRESS_ON_PROPALCARD=Hide the delivery address on supplier invoices
+DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERSUPPLIERCARD=Hide the delivery address on supplier orders
 
-ReceiptContact=Responsable réception
+DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES=Separator with public notes if it is filled in
+DeliveryAddressSepReturnCar1=Single line break
+DeliveryAddressSepReturnCar2=Double line break
+DeliveryAddressSepdash=Line of -----
+
+ReceiptContact=Reception manager
+
+OptionsForBillingAddress = Billing address option
+DELIVERYADDRESS_DISPLAY_BILLED_ON_EXPEDITIONCARD = Show billing address on shipments
+DELIVERYADDRESS_DISPLAY_BILLED_ON_EXPEDITIONCARD_HELP = The address is displayed in the document notes when a billing contact (code BILLING) is associated with the document
+DELIVERYADDRESS_DISPLAY_BILLED_ON_DELIVERYCARD = Display the billing address on delivery slips
+DELIVERYADDRESS_DISPLAY_BILLED_ON_DELIVERYCARD_HELP = The address is displayed in the document notes when a billing contact (code BILLING) is associated with the document
+BillingAddress = Billing address
