@@ -184,6 +184,9 @@ class ActionsDeliveryAddress
 			if($wysiwyg) $object->note_public = dol_nl2br($txt).$object->note_public;
 			else $object->note_public = $txt.$object->note_public;
 		}
+
+		return 0;
+
 	}
 
 	/**

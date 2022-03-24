@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ## 1.5
+- FIX : we must return something at the end of a hook - *2022-03-24* - 1.5.1
 - FIX: missing English translations (thanks to @erikvanberkum) - *2021-10-01* - 1.5.0
 
 ## Version 1.4
