@@ -2,6 +2,7 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
+- NEW : Ajout de la class TechATM pour l'affichage de la page "A propos" *12/05/2022* 1.6.0
 
 ## 1.5
 - FIX : we must return something at the end of a hook - *2022-03-24* - 1.5.1

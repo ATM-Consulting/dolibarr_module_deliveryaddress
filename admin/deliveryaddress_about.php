@@ -62,14 +62,16 @@ echo dol_get_fiche_head(
 );
 
 // About page goes here
-print '<div style="float: left;"><img src="../img/Dolibarr_Preferred_Partner_logo.png" /></div>';
-print '<div>'.$langs->trans('ATMAbout').'</div>';
+require_once __DIR__ . '/../class/techatm.class.php';
+$techATM = new \deliveryaddress\TechATM($db);
 
-echo dol_get_fiche_end();
+require_once __DIR__ . '/../core/modules/modDeliveryAddress.class.php';
+$moduleDescriptor = new modDeliveryAddress($db);
 
-print '<br><center>';
-print '<a href="http://www.atm-consulting.fr" target="_blank"><img src="../img/ATM_logo.jpg" /></a>';
-print '</center>';
+print $techATM->getAboutPage($moduleDescriptor);
+
+// Page end
+print dol_get_fiche_end();
 
 llxFooter();
 
