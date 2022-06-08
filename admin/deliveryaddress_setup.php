@@ -36,6 +36,8 @@ dol_include_once('abricot/includes/lib/admin.lib.php');
 // Translations
 $langs->load("deliveryaddress@deliveryaddress");
 
+$newToken = function_exists('newToken') ? newToken() : $_SESSION['newtoken'];
+
 // Access control
 if (! $user->admin) {
     accessforbidden();
@@ -123,7 +125,7 @@ print '<td>'.$langs->trans("ParamDELIVERYADDRESS_SHOW_PHONE").'</td>';
 print '<td align="center" width="20">&nbsp;</td>';
 print '<td align="right" width="300">';
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
-print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="token" value="'.$newToken.'">';
 print '<input type="hidden" name="action" value="set_DELIVERYADDRESS_SHOW_PHONE">';
 print $form->selectyesno("DELIVERYADDRESS_SHOW_PHONE",$conf->global->DELIVERYADDRESS_SHOW_PHONE,1);
 print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
@@ -136,7 +138,7 @@ print '<td>'.$langs->trans("DELIVERYADDRESS_SHOW_INFO_REPONSABLE_RECEPTION").'</
 print '<td align="center" width="20">&nbsp;</td>';
 print '<td align="center" width="300">';
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">'; // Keep form because ajax_constantonoff return single link with <a> if the js is disabled
-print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="token" value="'.$newToken.'">';
 print '<input type="hidden" name="action" value="set_DELIVERYADDRESS_SHOW_INFO_REPONSABLE_RECEPTION">';
 print ajax_constantonoff('DELIVERYADDRESS_SHOW_INFO_REPONSABLE_RECEPTION');
 print '</form>';
@@ -148,7 +150,7 @@ print '<td>'.$langs->trans("DELIVERYADDRESS_HIDE_ADDRESS_ON_INVOICECARD").'</td>
 print '<td align="center" width="20">&nbsp;</td>';
 print '<td align="center" width="300">';
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">'; // Keep form because ajax_constantonoff return single link with <a> if the js is disabled
-print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="token" value="'.$newToken.'">';
 print '<input type="hidden" name="action" value="set_DELIVERYADDRESS_HIDE_ADDRESS_ON_INVOICECARD">';
 print ajax_constantonoff('DELIVERYADDRESS_HIDE_ADDRESS_ON_INVOICECARD');
 print '</form>';
@@ -160,7 +162,7 @@ print '<td>'.$langs->trans("DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERCARD").'</td>';
 print '<td align="center" width="20">&nbsp;</td>';
 print '<td align="center" width="300">';
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">'; // Keep form because ajax_constantonoff return single link with <a> if the js is disabled
-print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="token" value="'.$newToken.'">';
 print '<input type="hidden" name="action" value="set_DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERCARD">';
 print ajax_constantonoff('DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERCARD');
 print '</form>';
@@ -172,7 +174,7 @@ print '<td>'.$langs->trans("DELIVERYADDRESS_HIDE_ADDRESS_ON_PROPALCARD").'</td>'
 print '<td align="center" width="20">&nbsp;</td>';
 print '<td align="center" width="300">';
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">'; // Keep form because ajax_constantonoff return single link with <a> if the js is disabled
-print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="token" value="'.$newToken.'">';
 print '<input type="hidden" name="action" value="set_DELIVERYADDRESS_HIDE_ADDRESS_ON_PROPALCARD">';
 print ajax_constantonoff('DELIVERYADDRESS_HIDE_ADDRESS_ON_PROPALCARD');
 print '</form>';
@@ -184,7 +186,7 @@ print '<td>'.$langs->trans("DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERSUPPLIERCARD").
 print '<td align="center" width="20">&nbsp;</td>';
 print '<td align="center" width="300">';
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">'; // Keep form because ajax_constantonoff return single link with <a> if the js is disabled
-print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="token" value="'.$newToken.'">';
 print '<input type="hidden" name="action" value="set_DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERSUPPLIERCARD">';
 print ajax_constantonoff('DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERSUPPLIERCARD');
 print '</form>';
@@ -197,7 +199,7 @@ print '<td>'.$langs->trans("DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES").'</td>';
 print '<td align="center" width="20">&nbsp;</td>';
 print '<td align="center" width="300">';
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">'; // Keep form because ajax_constantonoff return single link with <a> if the js is disabled
-print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="token" value="'.$newToken.'">';
 print '<input type="hidden" name="action" value="set_DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES">';
 $arrayType=array('returnChar1'=>$langs->trans('DeliveryAddressSepReturnCar1'),
                  'returnChar2'=>$langs->trans('DeliveryAddressSepReturnCar2'),
