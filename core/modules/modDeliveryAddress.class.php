@@ -71,7 +71,7 @@ class modDeliveryAddress extends DolibarrModules
 		// Name of image file used for this module.
 		// If file is in theme/yourtheme/img directory under name object_pictovalue.png, use this->picto='pictovalue'
 		// If file is in module/img directory under name object_pictovalue.png, use this->picto='pictovalue@module'
-		$this->picto='sending';
+		$this->picto='module.svg@deliveryaddress';
 
 		// Defined all module parts (triggers, login, substitutions, menus, css, etc...)
 		// for default path (eg: /deliveryaddress/core/xxxxx) (0=disable, 1=enable)

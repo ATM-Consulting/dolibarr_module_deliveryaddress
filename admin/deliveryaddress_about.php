@@ -49,7 +49,7 @@ llxHeader('', $langs->trans($page_name));
 // Subheader
 $linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">'
     . $langs->trans("BackToModuleList") . '</a>';
-load_fiche_titre($langs->trans($page_name), $linkback);
+print load_fiche_titre($langs->trans($page_name), $linkback, 'object_module.svg@deliveryaddress');
 
 // Configuration header
 $head = deliveryaddressAdminPrepareHead();
@@ -57,9 +57,10 @@ echo dol_get_fiche_head(
     $head,
     'about',
     $langs->trans("Module104060Name"),
-    0,
-    'deliveryaddress@deliveryaddress'
+    -1,
+    'module.svg@deliveryaddress'
 );
+print dol_get_fiche_end(-1);
 
 // About page goes here
 require_once __DIR__ . '/../class/techatm.class.php';
