@@ -44,7 +44,7 @@ class modDeliveryAddress extends DolibarrModules
 
         $this->db = $db;
 
-		$this->editor_name = 'ATM-Consulting';
+		$this->editor_name = 'ATM Consulting';
 		$this->editor_url = "https://www.atm-consulting.fr";
 		// Id for module (must be unique).
 		// Use here a free id (See in Home -> System information -> Dolibarr for list of used modules id).
@@ -60,7 +60,7 @@ class modDeliveryAddress extends DolibarrModules
 		// Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
 		$this->description = "Description module DeliveryAddress";
 		// Possible values for version are: 'development', 'experimental', 'dolibarr' or version
-		$this->version = '1.6.1';
+		$this->version = '1.6.2';
 		// Url to the file with your last numberversion of this module
 		require_once __DIR__ . '/../../class/techatm.class.php';
 		$this->url_last_version = \deliveryaddress\TechATM::getLastModuleVersionUrl($this);
