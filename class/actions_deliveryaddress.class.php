@@ -215,8 +215,10 @@ class ActionsDeliveryAddress
 
 		$socname = !empty($contact->socname) ? $contact->socname . "\n" : "";
 		if ($wysiwyg) $socname = '<strong>' . $socname . '</strong>';
-		$maconfTVA = $conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS;
-		$maconfTargetDetails = $conf->global->MAIN_PDF_ADDALSOTARGETDETAILS;
+		if(!empty($conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS)) $maconfTVA = $conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS;
+		else $maconfTVA = '';
+		if(!empty($conf->global->MAIN_PDF_ADDALSOTARGETDETAILS)) $maconfTargetDetails = $conf->global->MAIN_PDF_ADDALSOTARGETDETAILS;
+		else $maconfTargetDetails = '';
 		$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = true;
 		$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = false;
 		$address = pdf_build_address($outputlangs, $mysoc, $soc, $contact, 1, 'target');
