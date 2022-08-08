@@ -49,7 +49,7 @@ function deliveryaddressAdminPrepareHead()
     //$this->tabs = array(
     //	'entity:-tabname:Title:@deliveryaddress:/deliveryaddress/mypage.php?id=__ID__'
     //); // to remove a tab
-    complete_head_from_modules($conf, $langs, $object, $head, $h, 'deliveryaddress');
+    complete_head_from_modules($conf, $langs, new stdClass(), $head, $h, 'deliveryaddress');
 
     return $head;
 }
