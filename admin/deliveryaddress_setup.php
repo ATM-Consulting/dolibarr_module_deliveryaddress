@@ -96,7 +96,7 @@ echo dol_get_fiche_head(
     'settings',
     $langs->trans("Module104060Name"),
 	$notab,
-    "module.svg@deliveryaddress"
+    "module@deliveryaddress"
 );
 
 
