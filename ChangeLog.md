@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 
 ## 1.6
 
+- FIX : Module icon size on Dolibarr V12 and above  *26/10/2022* 1.6.4
 - FIX : PHP 8 *04/08/2022* 1.6.3
 - FIX : Editor name *03/08/2022* 1.6.2
 - FIX : Module icon *13/07/2022* 1.6.1

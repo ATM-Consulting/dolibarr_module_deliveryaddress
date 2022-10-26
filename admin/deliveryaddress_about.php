@@ -58,7 +58,7 @@ echo dol_get_fiche_head(
     'about',
     $langs->trans("Module104060Name"),
     -1,
-    'module.svg@deliveryaddress'
+    'module@deliveryaddress'
 );
 print dol_get_fiche_end(-1);
 
