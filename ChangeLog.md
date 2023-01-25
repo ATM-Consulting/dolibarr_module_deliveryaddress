@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 
 ## 1.6
 
+- FIX : Erreur libellé setup : proposition commerciale au lieu de facture fournisseur  *25/01/2023* 1.6.5
 - FIX : Module icon size on Dolibarr V12 and above  *26/10/2022* 1.6.4
 - FIX : PHP 8 *04/08/2022* 1.6.3
 - FIX : Editor name *03/08/2022* 1.6.2

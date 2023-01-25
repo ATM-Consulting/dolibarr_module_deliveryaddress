@@ -12,7 +12,7 @@ DELIVERYADDRESS_SHOW_INFO_REPONSABLE_RECEPTION=Ajouter les informations de conta
 DELIVERYADDRESS_HIDE_ADDRESS_ON_INVOICECARD=Cacher l'adresse de livraison sur les factures clients
 DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERCARD=Cacher l'adresse de livraison sur les commandes clients
 
-DELIVERYADDRESS_HIDE_ADDRESS_ON_PROPALCARD=Cacher l'adresse de livraison sur les factures fournisseurs
+DELIVERYADDRESS_HIDE_ADDRESS_ON_PROPALCARD=Cacher l'adresse de livraison sur les propositions commerciales
 DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERSUPPLIERCARD=Cacher l'adresse de livraison sur les commandes fournisseurs
 
 DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES=Séparateur avec les notes publiques si elle est renseignée
