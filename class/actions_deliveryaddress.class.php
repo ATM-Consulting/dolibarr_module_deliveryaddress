@@ -232,6 +232,9 @@ class ActionsDeliveryAddress
 			if (!empty($contact->phone_pro) && !empty($contact->phone_mobile)) $phone .= " / ";
 			if (!empty($contact->phone_mobile)) $phone .= $outputlangs->convToOutputCharset($contact->phone_mobile);
 		}
+        if (!empty($conf->global->DELIVERYADDRESS_SHOW_EMAIL)) {
+            if (!empty($contact->email)) $email =  ($phone || $address ? "\n" : '') . $outputlangs->transnoentities("Email") . ": "  . $outputlangs->convToOutputCharset($contact->email);
+        }
 		if (!empty($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES)) {
 			switch ($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES) {
 				case 'returnChar1':
@@ -250,7 +253,7 @@ class ActionsDeliveryAddress
 
 		$end = !empty($object->note_public) ? $sep : "";
 
-		return  $title . $socname . $address . $phone . $end;
+        return  $title . $socname . $address . $phone . $email . $end;
 	}
 
 	/**
