@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ## 1.7
-- NEW : Add email in note public
+- NEW : [Inovea] Add email in note public - *25/05/2023* - 1.7.0
 
 ## 1.6
 
