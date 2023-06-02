@@ -7,6 +7,7 @@ DeliveryAddressSetup = Delivery address module setup
 DeliveryAddressAbout = About Delivery address
 
 ParamDELIVERYADDRESS_SHOW_PHONE = Display the phone number associated with the contact / address
+ParamDELIVERYADDRESS_SHOW_EMAIL = Display the e-mail address associated with the contact / address
 DELIVERYADDRESS_SHOW_INFO_REPONSABLE_RECEPTION=Add the contact information of the "Supplier order reception manager"
 
 DELIVERYADDRESS_HIDE_ADDRESS_ON_INVOICECARD=Hide the delivery address on customer invoices
