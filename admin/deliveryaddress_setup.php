@@ -134,6 +134,19 @@ print '</td></tr>';
 
 $var=!$var;
 print '<tr '.$bc[$var].'>';
+print '<td>'.$langs->trans("ParamDELIVERYADDRESS_SHOW_EMAIL").'</td>';
+print '<td align="center" width="20">&nbsp;</td>';
+print '<td align="right" width="300">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
+print '<input type="hidden" name="token" value="'.$newToken.'">';
+print '<input type="hidden" name="action" value="set_DELIVERYADDRESS_SHOW_EMAIL">';
+print $form->selectyesno("DELIVERYADDRESS_SHOW_EMAIL",!empty($conf->global->DELIVERYADDRESS_SHOW_EMAIL)?$conf->global->DELIVERYADDRESS_SHOW_EMAIL:'',1);
+print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
+print '</form>';
+print '</td></tr>';
+
+$var=!$var;
+print '<tr '.$bc[$var].'>';
 print '<td>'.$langs->trans("DELIVERYADDRESS_SHOW_INFO_REPONSABLE_RECEPTION").'</td>';
 print '<td align="center" width="20">&nbsp;</td>';
 print '<td align="center" width="300">';
