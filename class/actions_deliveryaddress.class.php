@@ -265,9 +265,10 @@ class ActionsDeliveryAddress
 	function afterPDFCreation($parameters, &$object, &$action, $hookmanager)
 	{
 		// clean up the object if it was altered by beforePDFCreation
-		$object = $parameters['object'];
-		if (isset($object->note_public_original)) {
-			$object->note_public = $object->note_public_original;
+		// note: be carefull object is &$object ! please note that others modules could update object ...
+		$obj = $parameters['object'];
+		if (isset($obj->note_public_original)) {
+			$object->note_public = $obj->note_public_original;
 		}
 		return 0;
 	}
