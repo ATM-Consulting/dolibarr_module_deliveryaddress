@@ -23,10 +23,12 @@
  *          Put some comments here
  */
 
+require_once __DIR__ . '/../backport/v19/core/class/commonhookactions.class.php';
+
 /**
  * Class ActionsDeliveryAddress
  */
-class ActionsDeliveryAddress
+class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActions
 {
 	/**
 	 * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
@@ -69,10 +71,10 @@ class ActionsDeliveryAddress
 		$wysiwyg = !empty($conf->fckeditor->enabled);
 
 		if (
-			(	in_array('ordercard',explode(':',$parameters['context'])) && empty($conf->global->DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERCARD))
-			|| 	(in_array('propalcard',explode(':',$parameters['context'])) && empty($conf->global->DELIVERYADDRESS_HIDE_ADDRESS_ON_PROPALCARD))
-			||	(in_array('invoicecard',explode(':',$parameters['context'])) && empty($conf->global->DELIVERYADDRESS_HIDE_ADDRESS_ON_INVOICECARD))
-			|| 	(in_array('ordersuppliercard',explode(':',$parameters['context'])) && empty($conf->global->DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERSUPPLIERCARD))
+			(	in_array('ordercard',explode(':',$parameters['context'])) && !getDolGlobalString('DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERCARD'))
+			|| 	(in_array('propalcard',explode(':',$parameters['context'])) && !getDolGlobalString('DELIVERYADDRESS_HIDE_ADDRESS_ON_PROPALCARD'))
+			||	(in_array('invoicecard',explode(':',$parameters['context'])) && !getDolGlobalString('DELIVERYADDRESS_HIDE_ADDRESS_ON_INVOICECARD'))
+			|| 	(in_array('ordersuppliercard',explode(':',$parameters['context'])) && !getDolGlobalString('DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERSUPPLIERCARD'))
 			)
 		{
 			dol_include_once('/contact/class/contact.class.php');
@@ -87,7 +89,7 @@ class ActionsDeliveryAddress
 				}
 			}
 
-			if (!empty($conf->global->DELIVERYADDRESS_SHOW_INFO_REPONSABLE_RECEPTION))
+			if (getDolGlobalString('DELIVERYADDRESS_SHOW_INFO_REPONSABLE_RECEPTION'))
 			{
 				$TContacts = array();
 				if(method_exists($object, 'liste_contact')) $TContacts = $object->liste_contact(-1, 'internal');
@@ -110,8 +112,8 @@ class ActionsDeliveryAddress
 						if (!empty($u->office_phone) && !empty($u->user_mobile)) $phone.= ' / '.$u->user_mobile;
 						else if (!empty($u->user_mobile)) $phone .= $u->user_mobile;
 
-						if (!empty($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES)){
-							switch ($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES) {
+						if (getDolGlobalString('DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES')){
+							switch (getDolGlobalString('DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES')) {
 								case 'returnChar1':
 									$sep="\r\n";
 									break;
@@ -137,8 +139,8 @@ class ActionsDeliveryAddress
 
 		if (
 			!empty($parameters['DELIVERYADDRESS_DISPLAY_BILLED']) // IN case of custom PDF
-			||  (in_array('expeditioncard',explode(':',$parameters['context'])) && !empty($conf->global->DELIVERYADDRESS_DISPLAY_BILLED_ON_EXPEDITIONCARD))
-			|| 	(in_array('deliverycard',explode(':',$parameters['context'])) && !empty($conf->global->DELIVERYADDRESS_DISPLAY_BILLED_ON_DELIVERYCARD))
+			||  (in_array('expeditioncard',explode(':',$parameters['context'])) && getDolGlobalString('DELIVERYADDRESS_DISPLAY_BILLED_ON_EXPEDITIONCARD'))
+			|| 	(in_array('deliverycard',explode(':',$parameters['context'])) && getDolGlobalString('DELIVERYADDRESS_DISPLAY_BILLED_ON_DELIVERYCARD'))
 		) {
 
 			dol_include_once('/contact/class/contact.class.php');
@@ -215,9 +217,9 @@ class ActionsDeliveryAddress
 
 		$socname = !empty($contact->socname) ? $contact->socname . "\n" : "";
 		if ($wysiwyg) $socname = '<strong>' . $socname . '</strong>';
-		if(!empty($conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS)) $maconfTVA = $conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS;
+		if(getDolGlobalString('MAIN_TVAINTRA_NOT_IN_ADDRESS')) $maconfTVA = getDolGlobalString('MAIN_TVAINTRA_NOT_IN_ADDRESS');
 		else $maconfTVA = '';
-		if(!empty($conf->global->MAIN_PDF_ADDALSOTARGETDETAILS)) $maconfTargetDetails = $conf->global->MAIN_PDF_ADDALSOTARGETDETAILS;
+		if(getDolGlobalString('MAIN_PDF_ADDALSOTARGETDETAILS')) $maconfTargetDetails = getDolGlobalString('MAIN_PDF_ADDALSOTARGETDETAILS');
 		else $maconfTargetDetails = '';
 		$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = true;
 		$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = false;
@@ -226,17 +228,18 @@ class ActionsDeliveryAddress
 		$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = $maconfTargetDetails;
 
 		$phone = '';
-		if (!empty($conf->global->DELIVERYADDRESS_SHOW_PHONE)) {
+		if (getDolGlobalString('DELIVERYADDRESS_SHOW_PHONE')) {
 			if (!empty($contact->phone_pro) || !empty($contact->phone_mobile)) $phone .= ($address ? "\n" : '') . $outputlangs->transnoentities("Phone") . ": ";
 			if (!empty($contact->phone_pro)) $phone .= $outputlangs->convToOutputCharset($contact->phone_pro);
 			if (!empty($contact->phone_pro) && !empty($contact->phone_mobile)) $phone .= " / ";
 			if (!empty($contact->phone_mobile)) $phone .= $outputlangs->convToOutputCharset($contact->phone_mobile);
 		}
-        if (!empty($conf->global->DELIVERYADDRESS_SHOW_EMAIL)) {
+		$email = '';
+        if (getDolGlobalString('DELIVERYADDRESS_SHOW_EMAIL')) {
             if (!empty($contact->email)) $email =  ($phone || $address ? "\n" : '') . $outputlangs->transnoentities("Email") . ": "  . $outputlangs->convToOutputCharset($contact->email);
         }
-		if (!empty($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES)) {
-			switch ($conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES) {
+		if (getDolGlobalString('DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES')) {
+			switch (getDolGlobalString('DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES')) {
 				case 'returnChar1':
 					$sep = "\r\n";
 					break;
