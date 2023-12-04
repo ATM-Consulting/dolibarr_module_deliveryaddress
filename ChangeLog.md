@@ -2,9 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## Unreleased
-
-## 1.8
-- FIX : compat V19 et php8.2 - *28/11/2023* - 1.8.0
+- NEW: compat V19 et php8.2 - *28/11/2023* - 1.8.0  
+Changed Dolibarr compatibility range to 12 min - 19 max  
+Change PHP compatibility range to 7.0 min - 8.2 max
 
 ## 1.7
 - NEW : [Inovea] Add email in note public - *25/05/2023* - 1.7.0
