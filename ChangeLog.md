@@ -3,7 +3,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
-
+- FIX : Compat v20  
+  Changed Dolibarr compatibility range to 16 min - 20 max
 
 ## RELEASE 1.8
 
