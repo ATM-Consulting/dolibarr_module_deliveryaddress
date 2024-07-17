@@ -68,7 +68,7 @@ class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActio
 		$outputlangs = $parameters['outputlangs'];
 		$outputlangs->load('deliveryaddress@deliveryaddress');
 		$txt = '';
-		$wysiwyg = !empty($conf->fckeditor->enabled);
+		$wysiwyg = isModEnabled('fckeditor');
 
 		if (
 			(	in_array('ordercard',explode(':',$parameters['context'])) && !getDolGlobalString('DELIVERYADDRESS_HIDE_ADDRESS_ON_ORDERCARD'))
