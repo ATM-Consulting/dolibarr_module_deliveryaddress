@@ -33,7 +33,7 @@ require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
 require_once '../lib/deliveryaddress.lib.php';
 
 // Translations
-$langs->load("deliveryaddress@deliveryaddress");
+$langs->loadLangs(array("admin", "deliveryaddress@deliveryaddress"));
 
 // Access control
 if (! $user->admin) {
