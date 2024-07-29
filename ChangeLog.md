@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 
 
 
+## RELEASE 1.9
+
+- FIX : Compat v20
+  Changed Dolibarr compatibility range to 16 min - 20 max - *28/07/2024* - 1.9.0
+
 ## RELEASE 1.8
 
 - NEW: compat V19 et php8.2 - *28/11/2023* - 1.8.0  

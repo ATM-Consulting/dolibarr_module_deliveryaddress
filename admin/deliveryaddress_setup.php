@@ -34,7 +34,7 @@ require_once '../lib/deliveryaddress.lib.php';
 dol_include_once('abricot/includes/lib/admin.lib.php');
 
 // Translations
-$langs->load("deliveryaddress@deliveryaddress");
+$langs->loadLangs(array("admin", "deliveryaddress@deliveryaddress"));
 
 $newToken = function_exists('newToken') ? newToken() : $_SESSION['newtoken'];
 
