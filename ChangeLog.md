@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ## RELEASE 1.8
 
+- FIX : Erreur qui affichais deux fois l'adresse de livraison sur le pdf *22/08/2024* 1.8.1
 - NEW: compat V19 et php8.2 - *28/11/2023* - 1.8.0  
 Changed Dolibarr compatibility range to 12 min - 19 max  
 Change PHP compatibility range to 7.0 min - 8.2 max
@@ -22,7 +23,7 @@ Change PHP compatibility range to 7.0 min - 8.2 max
 
 ## RELEASE 1.6
 
-- FIX : Erreur libellé setup : proposition commerciale au lieu de facture fournisseur  *25/01/2023* 1.6.5
+- FIX : Erreur libellé setup : proposition commerciale au lieu de facture fournisseur *25/01/2023* 1.6.5
 - FIX : Module icon size on Dolibarr V12 and above  *26/10/2022* 1.6.4
 - FIX : PHP 8 *04/08/2022* 1.6.3
 - FIX : Editor name *03/08/2022* 1.6.2

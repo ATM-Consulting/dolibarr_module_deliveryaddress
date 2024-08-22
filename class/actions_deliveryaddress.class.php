@@ -83,6 +83,7 @@ class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActio
 			if(method_exists($object, 'liste_contact')) $TContacts = $object->liste_contact();
 			foreach($TContacts as $c) {
 				if($c['code'] == 'SHIPPING') {
+					if (in_array('ordersuppliercard',explode(':',$parameters['context'])) && ($action == 'confirm_approve' || $action == 'confirm_approve2')) break;
 					$txt.= $this->addConctactToString($object, $c, $outputlangs, $wysiwyg);
 
 					break;
