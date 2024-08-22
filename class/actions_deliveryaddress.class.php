@@ -184,7 +184,6 @@ class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActio
 			if (!isset($object->note_public_original)) {
 				$object->note_public_original = $object->note_public;
 			}
-			var_dump($txt);
 			if($wysiwyg) $object->note_public = dol_nl2br($txt).$object->note_public;
 			else $object->note_public = $txt.$object->note_public;
 		}
