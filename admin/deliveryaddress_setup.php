@@ -127,7 +127,7 @@ print '<td align="right" width="300">';
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.$newToken.'">';
 print '<input type="hidden" name="action" value="set_DELIVERYADDRESS_SHOW_PHONE">';
-print $form->selectyesno("DELIVERYADDRESS_SHOW_PHONE",getDolGlobalString('DELIVERYADDRESS_SHOW_PHONE')?$conf->global->DELIVERYADDRESS_SHOW_PHONE:'',1);
+print $form->selectyesno("DELIVERYADDRESS_SHOW_PHONE",getDolGlobalString('DELIVERYADDRESS_SHOW_PHONE'),1);
 print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
 print '</form>';
 print '</td></tr>';
@@ -140,7 +140,7 @@ print '<td align="right" width="300">';
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.$newToken.'">';
 print '<input type="hidden" name="action" value="set_DELIVERYADDRESS_SHOW_EMAIL">';
-print $form->selectyesno("DELIVERYADDRESS_SHOW_EMAIL",getDolGlobalString('DELIVERYADDRESS_SHOW_EMAIL')?$conf->global->DELIVERYADDRESS_SHOW_EMAIL:'',1);
+print $form->selectyesno("DELIVERYADDRESS_SHOW_EMAIL",getDolGlobalString('DELIVERYADDRESS_SHOW_EMAIL'),1);
 print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
 print '</form>';
 print '</td></tr>';
@@ -217,7 +217,7 @@ print '<input type="hidden" name="action" value="set_DELIVERYADDRESS_SEPARATOR_B
 $arrayType=array('returnChar1'=>$langs->trans('DeliveryAddressSepReturnCar1'),
                  'returnChar2'=>$langs->trans('DeliveryAddressSepReturnCar2'),
                  'dash'=>$langs->trans('DeliveryAddressSepdash'));
-print $form->selectarray("DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES",$arrayType,$conf->global->DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES,1);
+print $form->selectarray("DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES",$arrayType,getDolGlobalString('DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES'),1);
 print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
 print '</form>';
 print '</td></tr>';
