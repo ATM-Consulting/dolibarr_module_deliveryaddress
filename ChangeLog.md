@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 
 ## RELEASE 1.9
+- FIX : DA026283 Removed company details from delivery address on PDF - *2025-03-26* - 1.9.2
 - FIX : Compat v21 - *10/12/2024* - 1.9.1
 - FIX : Compat v20
   Changed Dolibarr compatibility range to 16 min - 20 max - *28/07/2024* - 1.9.0

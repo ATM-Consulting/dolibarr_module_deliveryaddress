@@ -224,20 +224,19 @@ class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActio
 		else $maconfTargetDetails = '';
 		$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = true;
 		$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = false;
-		$address = pdf_build_address($outputlangs, $mysoc, $soc, $contact, 1, 'target');
 		$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = $maconfTVA;
 		$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = $maconfTargetDetails;
 
 		$phone = '';
 		if (getDolGlobalString('DELIVERYADDRESS_SHOW_PHONE')) {
-			if (!empty($contact->phone_pro) || !empty($contact->phone_mobile)) $phone .= ($address ? "\n" : '') . $outputlangs->transnoentities("Phone") . ": ";
+			if (!empty($contact->phone_pro) || !empty($contact->phone_mobile)) $phone .= "\n" . $outputlangs->transnoentities("Phone") . ": ";
 			if (!empty($contact->phone_pro)) $phone .= $outputlangs->convToOutputCharset($contact->phone_pro);
 			if (!empty($contact->phone_pro) && !empty($contact->phone_mobile)) $phone .= " / ";
 			if (!empty($contact->phone_mobile)) $phone .= $outputlangs->convToOutputCharset($contact->phone_mobile);
 		}
 		$email = '';
         if (getDolGlobalString('DELIVERYADDRESS_SHOW_EMAIL')) {
-            if (!empty($contact->email)) $email =  ($phone || $address ? "\n" : '') . $outputlangs->transnoentities("Email") . ": "  . $outputlangs->convToOutputCharset($contact->email);
+            if (!empty($contact->email)) $email =  ($phone ? "\n" : '') . $outputlangs->transnoentities("Email") . ": "  . $outputlangs->convToOutputCharset($contact->email);
         }
 		if (getDolGlobalString('DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES')) {
 			switch (getDolGlobalString('DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES')) {
@@ -257,7 +256,7 @@ class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActio
 
 		$end = !empty($object->note_public) ? $sep : "";
 
-        return  $title . $socname . $address . $phone . $email . $end;
+        return  $title . $socname . $phone . $email . $end;
 	}
 
 	/**
