@@ -224,20 +224,21 @@ class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActio
 		else $maconfTargetDetails = '';
 		$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = true;
 		$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = false;
+
+		$address = $this->buildCustomAddress($outputlangs, $mysoc, $soc, $contact);
 		$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = $maconfTVA;
 		$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = $maconfTargetDetails;
 
 		$phone = '';
 		if (getDolGlobalString('DELIVERYADDRESS_SHOW_PHONE')) {
-			if (!empty($contact->phone_pro) || !empty($contact->phone_mobile)) $phone .= "\n" . $outputlangs->transnoentities("Phone") . ": ";
-			if (!empty($contact->phone_pro)) $phone .= $outputlangs->convToOutputCharset($contact->phone_pro);
+			if (!empty($contact->phone_pro) || !empty($contact->phone_mobile)) $phone .= ($address ? "\n" : '') . $outputlangs->transnoentities("Phone") . ": ";			if (!empty($contact->phone_pro)) $phone .= $outputlangs->convToOutputCharset($contact->phone_pro);
 			if (!empty($contact->phone_pro) && !empty($contact->phone_mobile)) $phone .= " / ";
 			if (!empty($contact->phone_mobile)) $phone .= $outputlangs->convToOutputCharset($contact->phone_mobile);
 		}
 		$email = '';
         if (getDolGlobalString('DELIVERYADDRESS_SHOW_EMAIL')) {
-            if (!empty($contact->email)) $email =  ($phone ? "\n" : '') . $outputlangs->transnoentities("Email") . ": "  . $outputlangs->convToOutputCharset($contact->email);
-        }
+			if (!empty($contact->email)) $email = ($phone || $address ? "\n" : '') . $outputlangs->transnoentities("Email") . ": " . $outputlangs->convToOutputCharset($contact->email);
+		}
 		if (getDolGlobalString('DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES')) {
 			switch (getDolGlobalString('DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES')) {
 				case 'returnChar1':
@@ -256,7 +257,7 @@ class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActio
 
 		$end = !empty($object->note_public) ? $sep : "";
 
-        return  $title . $socname . $phone . $email . $end;
+        return  $title . $socname . $address . $phone . $email . $end;
 	}
 
 	/**
@@ -274,5 +275,109 @@ class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActio
 			$object->note_public = $obj->note_public_original;
 		}
 		return 0;
+	}
+
+	/**
+	 *    Return a string with full address formatted for output on PDF documents
+	 *
+	 * @param Translate $outputlangs Output langs object
+	 * @param Societe $sourcecompany Source company object
+	 * @param Societe $targetcompany Target company object
+	 * @param Contact $targetcontact Target contact object
+	 * @return string String with full address or -1 if KO
+	 */
+	private function buildCustomAddress(Translate $outputlangs, Societe $sourcecompany, Societe $targetcompany, Contact $targetcontact): string
+	{
+		if (!empty($sourcecompany->state_id) && empty($sourcecompany->state)) {
+			$sourcecompany->state = getState($sourcecompany->state_id);
+		}
+		if (!empty($targetcompany->state_id) && empty($targetcompany->state)) {
+			$targetcompany->state = getState($targetcompany->state_id);
+		}
+
+		$stringaddress = $outputlangs->convToOutputCharset($targetcontact->getFullName($outputlangs, 1));
+
+		if (!empty($targetcontact->address)) {
+			$stringaddress .= ($stringaddress ? "\n" : '').$outputlangs->convToOutputCharset(dol_format_address($targetcontact))."\n";
+		} else {
+			$companytouseforaddress = $targetcompany;
+
+			// Contact on a thirdparty that is a different thirdparty than the thirdparty of object
+			if ($targetcontact->socid > 0 && $targetcontact->socid != $targetcompany->id) {
+				$targetcontact->fetch_thirdparty();
+				$companytouseforaddress = $targetcontact->thirdparty;
+			}
+
+			$stringaddress .= ($stringaddress ? "\n" : '').$outputlangs->convToOutputCharset(dol_format_address($companytouseforaddress))."\n";
+		}
+		// Country
+		if (!empty($targetcontact->country_code) && $targetcontact->country_code != $sourcecompany->country_code) {
+			$stringaddress .= ($stringaddress ? "\n" : '').$outputlangs->convToOutputCharset($outputlangs->transnoentitiesnoconv("Country".$targetcontact->country_code));
+		} elseif (empty($targetcontact->country_code) && !empty($targetcompany->country_code) && ($targetcompany->country_code != $sourcecompany->country_code)) {
+			$stringaddress .= ($stringaddress ? "\n" : '').$outputlangs->convToOutputCharset($outputlangs->transnoentitiesnoconv("Country".$targetcompany->country_code));
+		}
+
+		if (getDolGlobalString('MAIN_PDF_ADDALSOTARGETDETAILS')) {
+			// Phone
+			if (getDolGlobalString('MAIN_PDF_ADDALSOTARGETDETAILS')) {
+				if (!empty($targetcontact->phone_pro) || !empty($targetcontact->phone_mobile)) {
+					$stringaddress .= ($stringaddress ? "\n" : '').$outputlangs->transnoentities("Phone").": ";
+				}
+				if (!empty($targetcontact->phone_pro)) {
+					$stringaddress .= $outputlangs->convToOutputCharset($targetcontact->phone_pro);
+				}
+				if (!empty($targetcontact->phone_pro) && !empty($targetcontact->phone_mobile)) {
+					$stringaddress .= " / ";
+				}
+				if (!empty($targetcontact->phone_mobile)) {
+					$stringaddress .= $outputlangs->convToOutputCharset($targetcontact->phone_mobile);
+				}
+			}
+			// Fax
+			if (getDolGlobalString('MAIN_PDF_ADDALSOTARGETDETAILS')) {
+				if ($targetcontact->fax) {
+					$stringaddress .= ($stringaddress ? "\n" : '').$outputlangs->transnoentities("Fax").": ".$outputlangs->convToOutputCharset($targetcontact->fax);
+				}
+			}
+			// EMail
+			if (getDolGlobalString('MAIN_PDF_ADDALSOTARGETDETAILS')) {
+				if ($targetcontact->email) {
+					$stringaddress .= ($stringaddress ? "\n" : '').$outputlangs->transnoentities("Email").": ".$outputlangs->convToOutputCharset($targetcontact->email);
+				}
+			}
+			// Web
+			if (getDolGlobalString('MAIN_PDF_ADDALSOTARGETDETAILS')) {
+				if ($targetcontact->url) {
+					$stringaddress .= ($stringaddress ? "\n" : '').$outputlangs->transnoentities("Web").": ".$outputlangs->convToOutputCharset($targetcontact->url);
+				}
+			}
+		}
+
+		// Intra VAT
+		if (!getDolGlobalString('MAIN_TVAINTRA_NOT_IN_ADDRESS')) {
+			if (getDolGlobalInt('MAIN_USE_COMPANY_NAME_OF_CONTACT')) {
+				$targetcontact->fetch_thirdparty();
+				if (!empty($targetcontact->thirdparty->id) && $targetcontact->thirdparty->tva_intra) {
+					$stringaddress .= ($stringaddress ? "\n" : '') . $outputlangs->transnoentities("VATIntraShort") . ': ' . $outputlangs->convToOutputCharset($targetcontact->thirdparty->tva_intra);
+				}
+			} elseif (!empty($targetcompany->tva_intra)) {
+				$stringaddress .= ($stringaddress ? "\n" : '').$outputlangs->transnoentities("VATIntraShort").': '.$outputlangs->convToOutputCharset($targetcompany->tva_intra);
+			}
+		}
+
+		// Legal form
+		if (getDolGlobalString('MAIN_LEGALFORM_IN_ADDRESS') && !empty($targetcompany->forme_juridique_code)) {
+			$tmp = getFormeJuridiqueLabel($targetcompany->forme_juridique_code);
+			$stringaddress .= ($stringaddress ? "\n" : '').$tmp;
+		}
+
+		// Public note
+		if (getDolGlobalString('MAIN_PUBLIC_NOTE_IN_ADDRESS')) {
+			if (!empty($targetcompany->note_public)) {
+				$stringaddress .= ($stringaddress ? "\n" : '').dol_string_nohtmltag($targetcompany->note_public);
+			}
+		}
+
+		return $stringaddress;
 	}
 }
