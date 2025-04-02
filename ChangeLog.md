@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 
 ## RELEASE 1.9
+- FIX : DA026328 New conf to remove break before country in PDF - *2025-04-02* - 1.9.3
 - FIX : DA026283 Removed company details from delivery address on PDF - *2025-03-26* - 1.9.2
 - FIX : Compat v21 - *10/12/2024* - 1.9.1
 - FIX : Compat v20

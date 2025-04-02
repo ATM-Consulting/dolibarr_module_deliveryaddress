@@ -327,7 +327,7 @@ class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActio
 	{
 		$countryCode = $targetcontact->country_code ?: $targetcompany->country_code;
 		if ($countryCode && $countryCode != $sourcecompany->country_code) {
-			$stringaddress .= ($stringaddress ? "\n" : '') . $outputlangs->convToOutputCharset($outputlangs->transnoentitiesnoconv("Country" . $countryCode));
+			$stringaddress .= (($stringaddress && !getDolGlobalString('MAIN_PDF_REMOVE_BREAK_BEFORE_COUNTRY')) ? "\n" : '') . $outputlangs->convToOutputCharset($outputlangs->transnoentitiesnoconv("Country" . $countryCode));
 		}
 	}
 
