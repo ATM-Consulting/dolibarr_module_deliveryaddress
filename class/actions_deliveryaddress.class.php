@@ -224,21 +224,21 @@ class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActio
 		else $maconfTargetDetails = '';
 		$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = true;
 		$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = false;
-		$address = pdf_build_address($outputlangs, $mysoc, $soc, $contact, 1, 'target');
+
+		$address = $this->buildCustomAddress($outputlangs, $mysoc, $soc, $contact);
 		$conf->global->MAIN_TVAINTRA_NOT_IN_ADDRESS = $maconfTVA;
 		$conf->global->MAIN_PDF_ADDALSOTARGETDETAILS = $maconfTargetDetails;
 
 		$phone = '';
 		if (getDolGlobalString('DELIVERYADDRESS_SHOW_PHONE')) {
-			if (!empty($contact->phone_pro) || !empty($contact->phone_mobile)) $phone .= ($address ? "\n" : '') . $outputlangs->transnoentities("Phone") . ": ";
-			if (!empty($contact->phone_pro)) $phone .= $outputlangs->convToOutputCharset($contact->phone_pro);
+			if (!empty($contact->phone_pro) || !empty($contact->phone_mobile)) $phone .= ($address ? "\n" : '') . $outputlangs->transnoentities("Phone") . ": ";			if (!empty($contact->phone_pro)) $phone .= $outputlangs->convToOutputCharset($contact->phone_pro);
 			if (!empty($contact->phone_pro) && !empty($contact->phone_mobile)) $phone .= " / ";
 			if (!empty($contact->phone_mobile)) $phone .= $outputlangs->convToOutputCharset($contact->phone_mobile);
 		}
 		$email = '';
         if (getDolGlobalString('DELIVERYADDRESS_SHOW_EMAIL')) {
-            if (!empty($contact->email)) $email =  ($phone || $address ? "\n" : '') . $outputlangs->transnoentities("Email") . ": "  . $outputlangs->convToOutputCharset($contact->email);
-        }
+			if (!empty($contact->email)) $email = ($phone || $address ? "\n" : '') . $outputlangs->transnoentities("Email") . ": " . $outputlangs->convToOutputCharset($contact->email);
+		}
 		if (getDolGlobalString('DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES')) {
 			switch (getDolGlobalString('DELIVERYADDRESS_SEPARATOR_BETWEEN_NOTES')) {
 				case 'returnChar1':
@@ -275,5 +275,138 @@ class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActio
 			$object->note_public = $obj->note_public_original;
 		}
 		return 0;
+	}
+
+
+	/**
+	 * @param Societe $company
+	 * @return void
+	 */
+	private function getStateIfNeeded(Societe $company): void
+	{
+		if (!empty($company->state_id) && empty($company->state)) {
+			$company->state = getState($company->state_id);
+		}
+	}
+
+	/**
+	 * @param Translate $outputlangs
+	 * @param Contact $contact
+	 * @param Societe $company
+	 * @return string
+	 */
+	private function getFormattedAddress(Translate $outputlangs, Contact $contact, Societe $company): string
+	{
+		$stringaddress = $outputlangs->convToOutputCharset($contact->getFullName($outputlangs, 1));
+
+		if (!empty($contact->address)) {
+			$stringaddress .= ($stringaddress ? "\n" : '') . $outputlangs->convToOutputCharset(dol_format_address($contact)) . "\n";
+		} else {
+			$companytouseforaddress = $company;
+
+			if ($contact->socid > 0 && $contact->socid != $company->id) {
+				$contact->fetch_thirdparty();
+				$companytouseforaddress = $contact->thirdparty;
+			}
+
+			$stringaddress .= ($stringaddress ? "\n" : '') . $outputlangs->convToOutputCharset(dol_format_address($companytouseforaddress)) . "\n";
+		}
+
+		return $stringaddress;
+	}
+
+	/**
+	 * @param Translate $outputlangs
+	 * @param Societe $sourcecompany
+	 * @param Societe $targetcompany
+	 * @param Contact $targetcontact
+	 * @param string $stringaddress
+	 * @return void
+	 */
+	private function addCountryInfo(Translate $outputlangs, Societe $sourcecompany, Societe $targetcompany, Contact $targetcontact, string &$stringaddress): void
+	{
+		$countryCode = $targetcontact->country_code ?: $targetcompany->country_code;
+		if ($countryCode && $countryCode != $sourcecompany->country_code) {
+			$stringaddress .= ($stringaddress ? "\n" : '') . $outputlangs->convToOutputCharset($outputlangs->transnoentitiesnoconv("Country" . $countryCode));
+		}
+	}
+
+	/**
+	 * @param Translate $outputlangs
+	 * @param Contact $contact
+	 * @param string $stringaddress
+	 * @return void
+	 */
+	private function addTargetDetails(Translate $outputlangs, Contact $contact, string &$stringaddress): void
+	{
+		if (getDolGlobalString('MAIN_PDF_ADDALSOTARGETDETAILS')) {
+			if (!empty($contact->phone_pro) || !empty($contact->phone_mobile)) {
+				$stringaddress .= ($stringaddress ? "\n" : '') . $outputlangs->transnoentities("Phone") . ": ";
+				$stringaddress .= !empty($contact->phone_pro) ? $outputlangs->convToOutputCharset($contact->phone_pro) : '';
+				$stringaddress .= (!empty($contact->phone_pro) && !empty($contact->phone_mobile)) ? " / " : '';
+				$stringaddress .= !empty($contact->phone_mobile) ? $outputlangs->convToOutputCharset($contact->phone_mobile) : '';
+			}
+			if ($contact->fax) {
+				$stringaddress .= ($stringaddress ? "\n" : '') . $outputlangs->transnoentities("Fax") . ": " . $outputlangs->convToOutputCharset($contact->fax);
+			}
+			if ($contact->email) {
+				$stringaddress .= ($stringaddress ? "\n" : '') . $outputlangs->transnoentities("Email") . ": " . $outputlangs->convToOutputCharset($contact->email);
+			}
+			if ($contact->url) {
+				$stringaddress .= ($stringaddress ? "\n" : '') . $outputlangs->transnoentities("Web") . ": " . $outputlangs->convToOutputCharset($contact->url);
+			}
+		}
+	}
+
+	/**
+	 * @param Translate $outputlangs
+	 * @param Societe $company
+	 * @param string $stringaddress
+	 * @return void
+	 */
+	private function addVATAndLegalInfo(Translate $outputlangs, Societe $company, string &$stringaddress): void
+	{
+		if (!getDolGlobalString('MAIN_TVAINTRA_NOT_IN_ADDRESS') && !empty($company->tva_intra)) {
+			$stringaddress .= ($stringaddress ? "\n" : '') . $outputlangs->transnoentities("VATIntraShort") . ": " . $outputlangs->convToOutputCharset($company->tva_intra);
+		}
+		if (getDolGlobalString('MAIN_LEGALFORM_IN_ADDRESS') && !empty($company->forme_juridique_code)) {
+			$tmp = getFormeJuridiqueLabel($company->forme_juridique_code);
+			$stringaddress .= ($stringaddress ? "\n" : '') . $tmp;
+		}
+	}
+
+	/**
+	 * @param Societe $company
+	 * @param string $stringaddress
+	 * @return void
+	 */
+	private function addPublicNote(Societe $company, string &$stringaddress): void
+	{
+		if (getDolGlobalString('MAIN_PUBLIC_NOTE_IN_ADDRESS') && !empty($company->note_public)) {
+			$stringaddress .= ($stringaddress ? "\n" : '') . dol_string_nohtmltag($company->note_public);
+		}
+	}
+
+	/**
+	 *    Return a string with full address formatted for output on PDF documents
+	 *
+	 * @param Translate $outputlangs Output langs object
+	 * @param Societe $sourcecompany Source company object
+	 * @param Societe $targetcompany Target company object
+	 * @param Contact $targetcontact Target contact object
+	 * @return string String with full address or -1 if KO
+	 */
+	private function buildCustomAddress(Translate $outputlangs, Societe $sourcecompany, Societe $targetcompany, Contact $targetcontact): string
+	{
+		$this->getStateIfNeeded($sourcecompany);
+		$this->getStateIfNeeded($targetcompany);
+
+		$stringaddress = $this->getFormattedAddress($outputlangs, $targetcontact, $targetcompany);
+		$this->addCountryInfo($outputlangs, $sourcecompany, $targetcompany, $targetcontact, $stringaddress);
+		$this->addTargetDetails($outputlangs, $targetcontact, $stringaddress);
+		$this->addVATAndLegalInfo($outputlangs, $targetcompany, $stringaddress);
+		$this->addPublicNote($targetcompany, $stringaddress);
+
+		return $stringaddress;
 	}
 }
