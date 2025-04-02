@@ -317,6 +317,22 @@ class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActio
 
 	/**
 	 * @param Translate $outputlangs
+	 * @param Societe $sourcecompany
+	 * @param Societe $targetcompany
+	 * @param Contact $targetcontact
+	 * @param string $stringaddress
+	 * @return void
+	 */
+	private function addCountryInfo(Translate $outputlangs, Societe $sourcecompany, Societe $targetcompany, Contact $targetcontact, string &$stringaddress): void
+	{
+		$countryCode = $targetcontact->country_code ?: $targetcompany->country_code;
+		if ($countryCode && $countryCode != $sourcecompany->country_code) {
+			$stringaddress .= ($stringaddress ? "\n" : '') . $outputlangs->convToOutputCharset($outputlangs->transnoentitiesnoconv("Country" . $countryCode));
+		}
+	}
+
+	/**
+	 * @param Translate $outputlangs
 	 * @param Contact $contact
 	 * @param string $stringaddress
 	 * @return void
@@ -360,6 +376,18 @@ class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActio
 	}
 
 	/**
+	 * @param Societe $company
+	 * @param string $stringaddress
+	 * @return void
+	 */
+	private function addPublicNote(Societe $company, string &$stringaddress): void
+	{
+		if (getDolGlobalString('MAIN_PUBLIC_NOTE_IN_ADDRESS') && !empty($company->note_public)) {
+			$stringaddress .= ($stringaddress ? "\n" : '') . dol_string_nohtmltag($company->note_public);
+		}
+	}
+
+	/**
 	 *    Return a string with full address formatted for output on PDF documents
 	 *
 	 * @param Translate $outputlangs Output langs object
@@ -374,8 +402,10 @@ class ActionsDeliveryAddress extends \deliveryaddress\RetroCompatCommonHookActio
 		$this->getStateIfNeeded($targetcompany);
 
 		$stringaddress = $this->getFormattedAddress($outputlangs, $targetcontact, $targetcompany);
+		$this->addCountryInfo($outputlangs, $sourcecompany, $targetcompany, $targetcontact, $stringaddress);
 		$this->addTargetDetails($outputlangs, $targetcontact, $stringaddress);
 		$this->addVATAndLegalInfo($outputlangs, $targetcompany, $stringaddress);
+		$this->addPublicNote($targetcompany, $stringaddress);
 
 		return $stringaddress;
 	}
